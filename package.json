@@ -1,0 +1,31 @@
+{
+  "name": "simpledatavisualization",
+  "version": "1.0.0",
+  "description": "simple data visualization",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miyuesc/SimpleDataVisualization.git"
+  },
+  "author": "MiyueFE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miyuesc/SimpleDataVisualization/issues"
+  },
+  "homepage": "https://github.com/miyuesc/SimpleDataVisualization#readme",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.1.5",
+    "@vue/compiler-sfc": "^3.0.6",
+    "element-plus": "^1.0.2-beta.32",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-external-globals": "^0.6.1",
+    "vite": "^2.0.4",
+    "vue": "^3.0.6",
+    "vue-router": "^4.0.4"
+  }
+}
