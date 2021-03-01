@@ -11,8 +11,9 @@ export default ({ mode }) => {
 
     return {
         plugins: [vue()],
-        base: "./",
+        // base: "./",
         build: {
+            manifest: true,
             rollupOptions: {
                 input: IS_PROD ? "./build/index.html" : "./index.html",
                 external: ["vue", "element-plus", "vue-router"],
