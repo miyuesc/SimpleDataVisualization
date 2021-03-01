@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a165f942-c97e-444d-b53f-5f80a4a716a4" name="Default Changelist" comment="" />
+    <list default="true" id="a165f942-c97e-444d-b53f-5f80a4a716a4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,17 +54,27 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.15.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.14.31" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.2.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization" />
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\dev" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\src" />
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization" />
       <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\public" />
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\build" />
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\dev" />
+      <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.serve">
+  <component name="RunManager" selected="npm.build">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -74,9 +107,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.serve" />
         <item itemvalue="npm.build" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.serve" />
       </list>
     </recent_temporary>
   </component>
@@ -88,30 +121,45 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1614582830400</updated>
-      <workItem from="1614582831453" duration="2628000" />
+      <workItem from="1614582831453" duration="7456000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1867" height="320" key="GridCell.Tab.0.bottom" timestamp="1614585347970">
+    <state width="1867" height="341" key="GridCell.Tab.0.bottom" timestamp="1614589834896">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="320" key="GridCell.Tab.0.bottom/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614585347970" />
-    <state width="1867" height="320" key="GridCell.Tab.0.center" timestamp="1614585347970">
+    <state width="1867" height="341" key="GridCell.Tab.0.bottom/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614589834896" />
+    <state width="1867" height="341" key="GridCell.Tab.0.center" timestamp="1614589834896">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="320" key="GridCell.Tab.0.center/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614585347970" />
-    <state width="1867" height="320" key="GridCell.Tab.0.left" timestamp="1614585347970">
+    <state width="1867" height="341" key="GridCell.Tab.0.center/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614589834896" />
+    <state width="1867" height="341" key="GridCell.Tab.0.left" timestamp="1614589834896">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="320" key="GridCell.Tab.0.left/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614585347970" />
-    <state width="1867" height="320" key="GridCell.Tab.0.right" timestamp="1614585347970">
+    <state width="1867" height="341" key="GridCell.Tab.0.left/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614589834896" />
+    <state width="1867" height="341" key="GridCell.Tab.0.right" timestamp="1614589834896">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="320" key="GridCell.Tab.0.right/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614585347970" />
+    <state width="1867" height="341" key="GridCell.Tab.0.right/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614589834896" />
+    <state x="2509" y="239" width="742" height="722" key="find.popup" timestamp="1614587420431">
+      <screen x="1920" y="0" width="1920" height="1200" />
+    </state>
+    <state x="2509" y="239" width="742" height="722" key="find.popup/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614587420431" />
     <state x="2459" y="165" width="840" height="1034" key="search.everywhere.popup" timestamp="1614584383650">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>

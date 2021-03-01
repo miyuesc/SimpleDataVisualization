@@ -2,36 +2,19 @@ import commonjs from "rollup-plugin-commonjs";
 import externalGlobals from "rollup-plugin-external-globals"
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
-// export default defineConfig({
-//     plugins: [vue()],
-//     publicDir: "",
-//     build: {
-//         rollupOptions: {
-//             external: ["vue", "element-plus", "vue-router"],
-//             plugins: [
-//                 commonjs(),
-//                 externalGlobals({
-//                     vue: "Vue",
-//                     "element-plus": "ElementPlus",
-//                     "vue-router": "VueRouter"
-//                 })
-//             ]
-//         }
-//     }
-// })
+const { resolve } = require('path')
 
-export default ({ command, mode }) => {
+export default ({ mode }) => {
+
     const IS_PROD = mode === "production";
-    console.log("mode:", mode);
+    console.log("\n > build mode:", `"${mode}"`);
 
-    // 入口页面
-    const PUBLIC_DIR = IS_PROD ? "" : "";
-    return  {
+    return {
         plugins: [vue()],
-        publicDir: mode === "p",
+        base: "./",
         build: {
             rollupOptions: {
+                input: IS_PROD ? "./build/index.html" : "./index.html",
                 external: ["vue", "element-plus", "vue-router"],
                 plugins: [
                     commonjs(),
