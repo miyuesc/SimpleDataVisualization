@@ -4,9 +4,9 @@
   "description": "simple data visualization",
   "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite",
+    "build": "vite build && node script/buildcdn.js",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -19,13 +19,50 @@
   },
   "homepage": "https://github.com/miyuesc/SimpleDataVisualization#readme",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.13.8",
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.6",
+    "@vue/eslint-config-prettier": "^6.0.0",
     "element-plus": "^1.0.2-beta.32",
+    "eslint": "^7.21.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.6.0",
+    "fs-extra": "^9.1.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-external-globals": "^0.6.1",
     "vite": "^2.0.4",
     "vue": "^3.0.6",
     "vue-router": "^4.0.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended",
+      "@vue/prettier"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "prettier/prettier": [
+        "warn",
+        {
+          "useTabs": false,
+          "singleQuote": false,
+          "printWidth": 100,
+          "semi": true,
+          "trailingComma": "none",
+          "bracketSpacing": true,
+          "jsxBracketSameLine": true,
+          "arrowParens": "avoid",
+          "requirePragma": false,
+          "proseWrap": "preserve"
+        }
+      ]
+    }
   }
 }

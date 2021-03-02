@@ -1,8 +1,6 @@
 import commonjs from "rollup-plugin-commonjs";
-import externalGlobals from "rollup-plugin-external-globals"
-import vue from '@vitejs/plugin-vue'
-
-const { resolve } = require('path')
+import externalGlobals from "rollup-plugin-external-globals";
+import vue from '@vitejs/plugin-vue';
 
 export default ({ mode }) => {
 
@@ -15,7 +13,7 @@ export default ({ mode }) => {
         build: {
             manifest: true,
             rollupOptions: {
-                input: IS_PROD ? "./build/index.html" : "./index.html",
+                input: "./index.html",
                 external: ["vue", "element-plus", "vue-router"],
                 plugins: [
                     commonjs(),

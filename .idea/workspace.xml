@@ -19,7 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a165f942-c97e-444d-b53f-5f80a4a716a4" name="Default Changelist" comment="" />
+    <list default="true" id="a165f942-c97e-444d-b53f-5f80a4a716a4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +78,7 @@
       <recent name="C:\Users\cisdi\Documents\GitHub\SimpleDataVisualization\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.build">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -102,9 +111,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.build" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.serve" />
+        <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
   </component>
@@ -117,6 +126,7 @@
       <option name="presentableId" value="Default" />
       <updated>1614582830400</updated>
       <workItem from="1614582831453" duration="8485000" />
+      <workItem from="1614645535919" duration="6294000" />
     </task>
     <servers />
   </component>
@@ -133,24 +143,29 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1867" height="341" key="GridCell.Tab.0.bottom" timestamp="1614591336970">
+    <state width="1867" height="294" key="GridCell.Tab.0.bottom" timestamp="1614651123867">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="341" key="GridCell.Tab.0.bottom/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614591336970" />
-    <state width="1867" height="341" key="GridCell.Tab.0.center" timestamp="1614591336970">
+    <state width="1867" height="294" key="GridCell.Tab.0.bottom/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614651123867" />
+    <state width="1867" height="294" key="GridCell.Tab.0.center" timestamp="1614651123867">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="341" key="GridCell.Tab.0.center/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614591336970" />
-    <state width="1867" height="341" key="GridCell.Tab.0.left" timestamp="1614591336970">
+    <state width="1867" height="294" key="GridCell.Tab.0.center/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614651123867" />
+    <state width="1867" height="294" key="GridCell.Tab.0.left" timestamp="1614651123866">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="341" key="GridCell.Tab.0.left/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614591336970" />
-    <state width="1867" height="341" key="GridCell.Tab.0.right" timestamp="1614591336970">
+    <state width="1867" height="294" key="GridCell.Tab.0.left/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614651123866" />
+    <state width="1867" height="294" key="GridCell.Tab.0.right" timestamp="1614651123867">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1867" height="341" key="GridCell.Tab.0.right/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614591336970" />
+    <state width="1867" height="294" key="GridCell.Tab.0.right/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614651123867" />
+    <state x="211" y="30" width="1505" height="1150" key="dock-window-1" timestamp="1614646291902">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="211" y="30" width="1505" height="1150" key="dock-window-1/-1920.30.1920.1050/1920.0.1920.1200/0.30.1920.1050@1920.0.1920.1200" timestamp="1614646291902" />
     <state x="2509" y="239" width="742" height="722" key="find.popup" timestamp="1614587420431">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
