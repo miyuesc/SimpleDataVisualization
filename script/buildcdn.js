@@ -5,6 +5,7 @@ const cdn = {
     js: [
         "https://unpkg.com/vue@next",
         "https://unpkg.com/vue-router@4.0.4/dist/vue-router.global.js",
+        "https://unpkg.com/vuex@3.6.2/dist/vuex.js",
         "https://unpkg.com/element-plus/lib/index.full.js"
     ],
     css: [
