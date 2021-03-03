@@ -1,9 +1,14 @@
 <template>
-  <div>Simple Data Visualization
-    <router-link to="/">home</router-link>
-    <router-link to="/login">login</router-link>
+<!--  <div>-->
+<!--    <router-link to="/">home</router-link>-->
+<!--    <el-divider direction="vertical" />-->
+<!--    <router-link to="/login">login</router-link>-->
+<!--    <el-divider direction="vertical" />-->
+<!--    <router-link to="/editor">editor</router-link>-->
+<!--    <el-divider direction="vertical" />-->
+<!--    <router-link to="/preview">preview</router-link>-->
     <router-view />
-  </div>
+<!--  </div>-->
 </template>
 
 <script setup>

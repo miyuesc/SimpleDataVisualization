@@ -5,9 +5,6 @@
   <p>bababababaababaab</p>
   <button @click="updateLineVisible">change visible</button>
   <button @click="updateLinePosition">change position</button>
-  <div class="test-box">
-    <drag-guide-lines />
-  </div>
 </template>
 
 <script>
@@ -36,13 +33,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.test-box {
-  position: relative;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 850px;
-  background: rgb(250, 235, 215);
-}
-</style>

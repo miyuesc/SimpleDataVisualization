@@ -12,9 +12,9 @@ const routes = [
     component: () => import("@/views/login/Login.vue")
   },
   {
-    path: "/edit",
-    name: "Edit",
-    component: () => import("@/views/edit/Edit.vue")
+    path: "/editor",
+    name: "Editor",
+    component: () => import("@/views/editor/Editor.vue")
   },
   {
     path: "/preview",
