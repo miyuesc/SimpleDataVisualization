@@ -11,6 +11,7 @@
       <!-- 指示器区域 -->
       <div class="editor-indicator-area">
         <drag-guide-lines />
+        <drag-indicator-points />
       </div>
     </div>
   </div>
@@ -20,10 +21,11 @@
 import { useStore } from "vuex";
 
 import DragGuideLines from "@/components/drag-cover/DragGuideLines.vue";
+import DragIndicatorPoints from "@/components/drag-cover/DragIndicatorPoints.vue";
 
 export default {
   name: "Editor",
-  components: {DragGuideLines},
+  components: {DragIndicatorPoints, DragGuideLines},
   setup() {
     const store = useStore();
     const dragState = store.state.dragModule;

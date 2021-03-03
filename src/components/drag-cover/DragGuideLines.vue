@@ -1,6 +1,6 @@
 <template>
-  <div class="drag-guide-line vertical-line" v-show="visible" v-bind:style="verticalStyle"></div>
-  <div class="drag-guide-line horizontal-line" v-show="visible" v-bind:style="horizontalStyle"></div>
+  <div class="drag-guide-line vertical-line" v-show="moving" v-bind:style="verticalStyle"></div>
+  <div class="drag-guide-line horizontal-line" v-show="moving" v-bind:style="horizontalStyle"></div>
 </template>
 
 <script>
@@ -11,10 +11,7 @@ export default {
   name: "DragGuideLines",
   setup() {
     const store = useStore();
-
     const dragState = store.state.dragModule
-
-    console.log(dragState);
 
     return {
       position: computed(() => dragState.position),

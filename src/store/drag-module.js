@@ -1,10 +1,10 @@
 const dragModule = {
   namespaced: true,
   state: () => ({
-    position: { left: 0, top: 0 }, // 位置
+    position: { left: 40, top: 40 }, // 位置
     size: { width: 420, height: 250 }, // 大小
-    visible: false, // 显示状态
-    moving: false // 是否移动 => 是否显示指示线
+    visible: true, // 显示状态
+    moving: true // 是否移动 => 是否显示指示线
   }),
   getters: {
     dragState(state) {
