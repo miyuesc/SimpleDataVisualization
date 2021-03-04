@@ -17,10 +17,10 @@ export default {
     return {
       moving: computed(() => activeElementState.moving),
       verticalStyle: computed(() => {
-        return `top: 0px; left: ${activeElementState.position.left}px; width: ${activeElementState.size.width}px; height: 100%; border-width: ${Math.floor(1 / editorScreenState.scale)}px`
+        return `top: 0px; left: ${activeElementState.position.left}px; width: ${activeElementState.size.width}px; height: 100%; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
       }),
       horizontalStyle: computed(() => {
-        return `top: ${activeElementState.position.top}px; left: 0px; width: 100%; height: ${activeElementState.size.height}px; border-width: ${Math.floor(1 / editorScreenState.scale)}px`
+        return `top: ${activeElementState.position.top}px; left: 0px; width: 100%; height: ${activeElementState.size.height}px; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
       })
     }
   }
@@ -31,7 +31,7 @@ export default {
 .drag-guide-line {
   position: absolute;
   background: none;
-  box-sizing: border-box;
+  /*box-sizing: border-box;*/
   outline: none;
   pointer-events: none;
   border-color: #c81414;

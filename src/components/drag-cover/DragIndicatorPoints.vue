@@ -1,12 +1,12 @@
 <template>
-  <div class="drag-indicator-area" :style="indicatorAreaStyle" v-show="visible" @mousedown.stop="handleToMove($event)">
+  <div class="drag-indicator-area" :style="indicatorAreaStyle" v-show="visible" @mousedown="handleToMove($event)">
     <span
       v-for="point in points"
       :key="point"
       :class="`indicator-point indicator-point-${point}`"
       :style="pointsScale"
       :ref="`point-${point}-ref`"
-      @mousedown.stop.prevent="handleToResize(point, $event)"
+      @mousedown="handleToResize(point, $event)"
     ></span>
   </div>
 </template>
@@ -31,11 +31,14 @@ export default {
     /* 计算属性 */
     const visible = computed(()=> activeElementState.visible);
     const scale = computed(() => editorScreenState.scale);
+    const size = computed(() => activeElementState.size);
+    const position = computed(() => activeElementState.position);
     const indicatorAreaStyle = computed(() => {
-      return `width: ${activeElementState.size.width}px; height: ${activeElementState.size.height}px; left: ${activeElementState.position.left}px; top: ${activeElementState.position.top}px`
+      let { size: { width, height }, position: { left, top } } = activeElementState;
+      return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px`
     })
     const pointsScale = computed(() => {
-      return `transform: scale(${1 / editorScreenState.scale})`;
+      return `transform: scale(${ 1 / editorScreenState.scale })`;
     })
 
     /* 方法 */
@@ -48,20 +51,32 @@ export default {
       isMoving,
       visible,
       scale,
-      indicatorAreaStyle,
+      size,
+      position,
       pointsScale,
+      indicatorAreaStyle,
       updateElementPosition,
       updateElementSize
     }
   },
   methods: {
     onMouseMoving(event) {
+      // 非 moving 或者 resizing 状态 直接返回
       if (!this.isResizing && !this.isMoving) return ;
-      const left = (this.currentPosition.left + (event.layerX - this.currentPosition.mouseX)) / this.scale;
-      const top = (this.currentPosition.top + (event.layerY - this.currentPosition.mouseY)) / this.scale;
-      console.log("x:", event.clientX, event.pageX, left);
-      console.log("y:", event.clientY, event.pageY, top);
-      this.updateElementPosition({top, left});
+      // 拖拽移动部分
+      // 根据鼠标移动距离更新元素的当前位置
+      let { x, y, mouseX, mouseY } = this._currentPosition;
+      let left = x + (event.clientX - mouseX) / this.scale;
+      let top = y + (event.clientY - mouseY) / this.scale;
+      // 判断是否还在可视区域内, 不在则重设为合法数值
+      if (left < 0) left = 0;
+      if (left + this.size.width > this._parentNodeSize.width) left = this._parentNodeSize.width - this.size.width;
+      if (top < 0) top = 0;
+      if (top + this.size.height > this._parentNodeSize.height) top = this._parentNodeSize.height - this.size.height;
+      // let isLegalX = (left + this.size.width <= this._parentNodeSize.width) || this.position.left < 0;
+      // let isLegalY = (top + this.size.height <= this._parentNodeSize.height) || this.position.top < 0;
+      // console.log(isLegalY, isLegalX);
+      this.updateElementPosition({ top, left });
     },
     onMouseUp(event) {
       if (!this.isResizing && !this.isMoving) return;
@@ -93,18 +108,26 @@ export default {
       // / 斜向 resize
     },
     handleToMove(event) {
+      // event.stopPropagation();
       this.isMoving = true;
-      event.stopPropagation();
-      this.currentPosition = {
-        top: event.target.offsetTop,
-        left: event.target.offsetLeft,
-        mouseX: Math.floor(event.clientX * this.scale),
-        mouseY: Math.floor(event.clientY * this.scale)
+      this._currentPosition = {
+        x: event.target.offsetLeft,
+        y: event.target.offsetTop,
+        mouseX: event.clientX,
+        mouseY: event.clientY
+        // mouseX: Math.floor(event.offsetX * this.scale),
+        // mouseY: Math.floor(event.offsetY * this.scale)
       }
-      console.log(this.currentPosition);
+      console.log(this._currentPosition);
     }
   },
   mounted() {
+    this._parentNodeSize = this.$el.parentNode ? ({
+      width: this.$el.parentNode.clientWidth,
+      height: this.$el.parentNode.clientHeight
+    }) : null;
+    console.log(this.$el.parentNode);
+    console.log(this._parentNodeSize);
     this.$el.parentNode && this.$el.parentNode.addEventListener("mousemove", this.onMouseMoving);
     this.$el.parentNode && this.$el.parentNode.addEventListener("touchmove", this.onMouseMoving, true);
 
@@ -125,7 +148,7 @@ export default {
 .drag-indicator-area {
   position: absolute;
   background: none;
-  box-sizing: border-box;
+  //box-sizing: border-box;
   outline: none;
   border: 2px solid #4a71fe;
   z-index: 2;

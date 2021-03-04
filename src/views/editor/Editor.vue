@@ -4,8 +4,8 @@
       header content
     </header>
     <main class="editor-main">
-      <aside class="editor-aside"></aside>
-      <aside class="editor-context-pad"></aside>
+<!--      <aside class="editor-aside"></aside>-->
+<!--      <aside class="editor-context-pad"></aside>-->
       <div class="editor-control-bar">
         <simple-controller />
       </div>
@@ -44,16 +44,6 @@ export default {
 
     return {
       ...activeElementState,
-      // updateLineVisible: () => {
-      //   console.log("activeElement: ", activeElementState)
-      //   store.commit("activeElement/updateVisible", !activeElementState.visible);
-      // },
-      // updateLinePosition: () => {
-      //   console.log("activeElement: ", activeElementState)
-      //   store.commit("activeElement/updatePosition", {
-      //     left: Math.floor(Math.random() * 1000), top: Math.floor(Math.random() * 600)
-      //   });
-      // },
       screenStyle: computed(() => {
         let { scale, position: { top , left } } = editorScreenState;
         return `transform: scale(${scale})`

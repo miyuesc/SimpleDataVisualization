@@ -1,7 +1,7 @@
 const editorScreen = {
   namespaced: true,
   state: () => ({
-    scale: 0.7,
+    scale: 0.8,
     position: {
       left: 15,
       top: 15
