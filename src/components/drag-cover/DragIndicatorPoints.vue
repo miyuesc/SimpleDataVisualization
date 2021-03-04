@@ -1,6 +1,13 @@
 <template>
   <div class="drag-indicator-area" :style="indicatorAreaStyle" v-show="visible">
-    <span v-for="point in points" :key="point" :class="`indicator-point indicator-point-${point}`" :style="pointsScale"></span>
+    <span
+      v-for="point in points"
+      :key="point"
+      :class="`indicator-point indicator-point-${point}`"
+      :style="pointsScale"
+      @mousedown.stop.prevent="resizeStart(point, $event)"
+      @touchstart.stop.prevent="resizeStart(point, $event)"
+    ></span>
   </div>
 </template>
 
@@ -26,6 +33,11 @@ export default {
       pointsScale: computed(() => {
         return `transform: scale(${1 / editorScreenState.scale})`;
       })
+    }
+  },
+  methods: {
+    resizeStart(point, event) {
+
     }
   }
 }
