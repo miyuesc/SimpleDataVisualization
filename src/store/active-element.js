@@ -1,4 +1,4 @@
-const dragModule = {
+const activeElement = {
   namespaced: true,
   state: () => ({
     position: { left: 40, top: 40 }, // 位置
@@ -7,7 +7,7 @@ const dragModule = {
     moving: true // 是否移动 => 是否显示指示线
   }),
   getters: {
-    dragState(state) {
+    activeElementState(state) {
       return state;
     }
   },
@@ -30,4 +30,4 @@ const dragModule = {
   }
 }
 
-export default dragModule;
+export default activeElement;

@@ -1,10 +1,10 @@
 import { createStore } from "vuex";
-import dragModule from "./drag-module"
+import activeElement from "./active-element"
 
 const store = createStore({
   state: {},
   modules: {
-    dragModule
+    dragModule: activeElement
   }
 })
 

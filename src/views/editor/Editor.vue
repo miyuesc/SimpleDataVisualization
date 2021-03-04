@@ -1,19 +1,23 @@
 <template>
   <div class="editor-container">
-    <div class="editor-header"></div>
-    <div class="editor-slider"></div>
-    <div class="editor-context-pad"></div>
-    <div class="editor-content">
-      <!-- 背景元素区域 -->
-      <div class="editor-wrapper-area"></div>
-      <!-- 元素存在区域 -->
-      <div class="editor-canvas-area"></div>
-      <!-- 指示器区域 -->
-      <div class="editor-indicator-area">
-        <drag-guide-lines />
-        <drag-indicator-points />
+    <header class="editor-header">
+      header content
+    </header>
+    <main class="editor-main">
+      <aside class="editor-aside"></aside>
+      <aside class="editor-context-pad"></aside>
+      <div class="editor-content">
+        <!-- 背景元素区域 -->
+        <div class="editor-wrapper-area"></div>
+        <!-- 元素存在区域 -->
+        <div class="editor-canvas-area"></div>
+        <!-- 指示器区域 -->
+        <div class="editor-indicator-area">
+          <drag-guide-lines />
+          <drag-indicator-points />
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -34,11 +38,11 @@ export default {
       ...dragState,
       updateLineVisible: () => {
         console.log("dragState: ", dragState)
-        store.commit("dragModule/UPDATE_VISIBLE", !dragState.visible);
+        store.commit("activeElement/UPDATE_VISIBLE", !dragState.visible);
       },
       updateLinePosition: () => {
         console.log("dragState: ", dragState)
-        store.commit("dragModule/UPDATE_POSITION", { left: Math.floor(Math.random() * 1000), top: Math.floor(Math.random() * 600)});
+        store.commit("activeElement/UPDATE_POSITION", { left: Math.floor(Math.random() * 1000), top: Math.floor(Math.random() * 600)});
       }
     }
   }
@@ -46,11 +50,5 @@ export default {
 </script>
 
 <style scoped>
-.editor-container {
-  position: relative;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
-  background: rgb(250, 235, 215);
-}
+@import "./editor-style.css";
 </style>
