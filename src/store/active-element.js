@@ -12,19 +12,19 @@ const activeElement = {
     }
   },
   mutations: {
-    UPDATE_ALL(state, newDragState) {
-      state = JSON.parse(JSON.stringify(newDragState));
+    updateAll(state, newState) {
+      state = JSON.parse(JSON.stringify(newState));
     },
-    UPDATE_POSITION(state, newPosition) {
+    updatePosition(state, newPosition) {
       state.position = { ...newPosition };
     },
-    UPDATE_SIZE(state, newSize) {
+    updateSize(state, newSize) {
       state.position = { ...newSize };
     },
-    UPDATE_VISIBLE(state, visible) {
+    updateVisible(state, visible) {
       state.visible = visible;
     },
-    UPDATE_MOVING(state, moving) {
+    updateMoving(state, moving) {
       state.moving = moving;
     }
   }

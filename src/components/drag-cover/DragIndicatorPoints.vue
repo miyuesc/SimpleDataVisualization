@@ -1,6 +1,6 @@
 <template>
-  <div class="drag-indicator-area" :style="indicatorAreaStyle">
-    <span v-for="point in points" :key="point" :class="`indicator-point indicator-point-${point}`"></span>
+  <div class="drag-indicator-area" :style="indicatorAreaStyle" v-show="visible">
+    <span v-for="point in points" :key="point" :class="`indicator-point indicator-point-${point}`" :style="pointsScale"></span>
   </div>
 </template>
 
@@ -12,29 +12,34 @@ export default {
   name: "DragIndicatorPoints",
   setup() {
     const store = useStore();
-    const dragState = store.state.dragModule
+    const activeElementState = store.state.activeElement
+    const editorScreenState = store.state.editorScreen;
 
     const points = ["tl", "tm", "tr", "lm", "rm", "bl", "bm", "br"]; // 左上角开始顺时针对应的各个指示点
 
     return {
       points,
+      visible: computed(()=> activeElementState.visible),
       indicatorAreaStyle: computed(() => {
-        return `width: ${dragState.size.width}px; height: ${dragState.size.height}px; left: ${dragState.position.left}px; top: ${dragState.position.top}px`
+        return `width: ${activeElementState.size.width}px; height: ${activeElementState.size.height}px; left: ${activeElementState.position.left}px; top: ${activeElementState.position.top}px`
+      }),
+      pointsScale: computed(() => {
+        return `transform: scale(${1 / editorScreenState.scale})`;
       })
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .drag-indicator-area {
   position: absolute;
   background: none;
   box-sizing: border-box;
   outline: none;
-  border: 1px solid #00b9ff;
+  border: 2px solid #4a71fe;
   pointer-events: none;
-  z-index: 1001;
+  z-index: 2;
 }
 .indicator-point {
   position: absolute;
@@ -42,42 +47,41 @@ export default {
   width: 6px;
   height: 6px;
   box-sizing: border-box;
-  border: 1px solid rgb(74, 113, 254);
+  border: 1px solid #4a71fe;
   border-radius: 50%;
   background: #ffffff;
-  z-index: 2;
-  transform: translateX(-50%) translateY(-50%);
+  z-index: 3;
 }
 .indicator-point-tl {
-  top: 0;
-  left: 0;
+  top: -4px;
+  left: -4px;
 }
 .indicator-point-tm {
-  top: 0;
+  top: -4px;
   left: 50%;
 }
 .indicator-point-tr {
-  top: 0;
-  left: 100%;
+  top: -4px;
+  right: -4px;
 }
 .indicator-point-lm {
   top: 50%;
-  left: 0;
+  left: -4px;
 }
 .indicator-point-rm {
   top: 50%;
-  left: 100%;
+  right: -4px;
 }
 .indicator-point-bl {
-  top: 100%;
-  left: 0;
+  bottom: -4px;
+  left: -4px;
 }
 .indicator-point-bm {
-  top: 100%;
+  bottom: -4px;
   left: 50%;
 }
 .indicator-point-br {
-  top: 100%;
-  left: 100%;
+  bottom: -4px;
+  right: -4px;
 }
 </style>

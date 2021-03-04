@@ -11,18 +11,16 @@ export default {
   name: "DragGuideLines",
   setup() {
     const store = useStore();
-    const dragState = store.state.dragModule
+    const activeElementState = store.state.activeElement;
+    const editorScreenState = store.state.editorScreen;
 
     return {
-      position: computed(() => dragState.position),
-      size: computed(() => dragState.size),
-      visible: computed(() => dragState.visible),
-      moving: computed(() => dragState.moving),
+      moving: computed(() => activeElementState.moving),
       verticalStyle: computed(() => {
-        return `top: 0px; left: ${dragState.position.left}px; width: ${dragState.size.width}px; height: 100%`
+        return `top: 0px; left: ${activeElementState.position.left}px; width: ${activeElementState.size.width}px; height: 100%; border-width: ${1 / editorScreenState.scale}px`
       }),
       horizontalStyle: computed(() => {
-        return `top: ${dragState.position.top}px; left: 0px; width: 100%; height: ${dragState.size.height}px`
+        return `top: ${activeElementState.position.top}px; left: 0px; width: 100%; height: ${activeElementState.size.height}px; border-width: ${1 / editorScreenState.scale}px`
       })
     }
   }
@@ -38,12 +36,14 @@ export default {
   pointer-events: none;
   border-color: #c81414;
   border-style: dashed;
-  z-index: 1000;
+  z-index: 1;
 }
 .vertical-line {
-  border-width: 0 1px 0 1px;
+  border-top: none;
+  border-bottom: none;
 }
 .horizontal-line {
-  border-width: 1px 0 1px 0;
+  border-left: none;
+  border-right: none;
 }
 </style>
