@@ -38,7 +38,6 @@ export default {
   box-sizing: border-box;
   outline: none;
   border: 2px solid #4a71fe;
-  pointer-events: none;
   z-index: 2;
 }
 .indicator-point {
@@ -51,6 +50,9 @@ export default {
   border-radius: 50%;
   background: #ffffff;
   z-index: 3;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .indicator-point-tl {
   top: -4px;
