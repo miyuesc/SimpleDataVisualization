@@ -15,11 +15,15 @@ const activeElement = {
     updateAll(state, newState) {
       state = JSON.parse(JSON.stringify(newState));
     },
+    updatePAS(state, newPAS) {
+      state.position = { ...newPAS.position }; // position and size
+      state.size = { ...newPAS.size };
+    },
     updatePosition(state, newPosition) {
       state.position = { ...newPosition };
     },
     updateSize(state, newSize) {
-      state.position = { ...newSize };
+      state.size = { ...newSize };
     },
     updateVisible(state, visible) {
       state.visible = visible;

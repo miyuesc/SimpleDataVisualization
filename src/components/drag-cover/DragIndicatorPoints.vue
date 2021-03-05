@@ -6,7 +6,7 @@
       :class="`indicator-point indicator-point-${point}`"
       :style="pointsScale"
       :ref="`point-${point}-ref`"
-      @mousedown="handleToResize(point, $event)"
+      @mousedown.stop.prevent="handleToResize(point, $event)"
     ></span>
   </div>
 </template>
@@ -22,6 +22,13 @@ export default {
     const activeElementState = store.state.activeElement
     const editorScreenState = store.state.editorScreen;
 
+    /*
+     * [ tl --- tm --- tr ]
+     * [  |             | ]
+     * [ lm            rm ]
+     * [  |             | ]
+     * [ bl --- bm --- br ]
+     */
     const points = ["tl", "tm", "tr", "lm", "rm", "bl", "bm", "br"]; // 左上角开始顺时针对应的各个指示点
 
     /* 变量 */
@@ -43,7 +50,7 @@ export default {
 
     /* 方法 */
     const updateElementPosition = position => store.commit("activeElement/updatePosition", position);
-    const updateElementSize = size => store.commit("activeElement/updateSize", size);
+    const updateElementPAS = pas => store.commit("activeElement/updatePAS", pas);
 
     return {
       points,
@@ -56,14 +63,53 @@ export default {
       pointsScale,
       indicatorAreaStyle,
       updateElementPosition,
-      updateElementSize
+      updateElementPAS
     }
   },
   methods: {
+    // 鼠标按下，触发 resize 事件
+    handleToResize(point, event) {
+      event.stopPropagation();
+      this.isResizing = true;
+      this._activePoint = point;
+      this._currentSize = {
+        width: event.target.parentNode.clientWidth, // 鼠标所在元素 的标记元素 的宽度
+        height: event.target.parentNode.clientHeight, // 鼠标所在元素 的标记元素 的高度
+        mouseX: event.clientX, // 鼠标处于屏幕的横向位置
+        mouseY: event.clientY // 鼠标处于屏幕的纵向位置
+      }
+    },
+    // 鼠标按下，触发 move 事件
+    handleToMove(event) {
+      this.isMoving = true;
+      this._currentPosition = {
+        x: event.target.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
+        y: event.target.offsetTop, // 鼠标所在元素 距离父元素上侧 的距离
+        mouseX: event.clientX, // 鼠标处于屏幕的横向位置
+        mouseY: event.clientY // 鼠标处于屏幕的纵向位置
+      }
+    },
+    // 鼠标移动状态
     onMouseMoving(event) {
       // 非 moving 或者 resizing 状态 直接返回
-      if (!this.isResizing && !this.isMoving) return ;
+      if (!this.isResizing && !this.isMoving) return;
       // 拖拽移动部分
+      if (this.isMoving) {
+        this.computedElementPosition(event);
+        return;
+      }
+      // resize 部分
+      this.computedElementSize(event);
+    },
+    // 鼠标抬起，移除事件与状态
+    onMouseUp() {
+      if (!this.isResizing && !this.isMoving) return;
+      this._activePoint = null;
+      this.isResizing = false;
+      this.isMoving = false;
+    },
+    // 计算移动距离，更新元素位置
+    computedElementPosition(event) {
       // 根据鼠标移动距离更新元素的当前位置
       let { x, y, mouseX, mouseY } = this._currentPosition;
       let left = x + (event.clientX - mouseX) / this.scale;
@@ -73,61 +119,64 @@ export default {
       if (left + this.size.width > this._parentNodeSize.width) left = this._parentNodeSize.width - this.size.width;
       if (top < 0) top = 0;
       if (top + this.size.height > this._parentNodeSize.height) top = this._parentNodeSize.height - this.size.height;
-      // let isLegalX = (left + this.size.width <= this._parentNodeSize.width) || this.position.left < 0;
-      // let isLegalY = (top + this.size.height <= this._parentNodeSize.height) || this.position.top < 0;
-      // console.log(isLegalY, isLegalX);
       this.updateElementPosition({ top, left });
     },
-    onMouseUp(event) {
-      if (!this.isResizing && !this.isMoving) return;
-      this.isResizing = false;
-      this.isMoving = false;
-      console.log(event);
+    // 计算移动距离，更新元素大小及位置
+    computedElementSize(event) {
+      let { width, height, mouseX, mouseY } = this._currentSize;
+      let { left, top } = this.position;
+      let newWidth = width;
+      let newHeight = height;
+      let newLeft = left;
+      let newTop = top;
+      // 根据 鼠标移动距离 设置 新的高宽
+      if (this._activePoint === "tl") {
+        let newWidth
+      }
+
+      // let newWidth = width + (event.clientX - mouseX) / this.scale;
+      // let newHeight = height + (event.clientY - mouseY) / this.scale;
+      // let newLeft = left;
+      // let newTop = top;
+      // if (this._activePoint.indexOf("t") !== -1) {
+      //   newTop = top + (event.clientY - mouseY) / this.scale;
+      // }
+      // if (this._activePoint.indexOf("l") !== -1) {
+      //   newLeft = left + (event.clientX - mouseX) / this.scale;
+      // }
+      // let position = { left: newLeft, top: newTop };
+      // if (this._activePoint === "tm" || this._activePoint === "bm") {
+      //   // 垂直方向 resize, 不会改变宽度
+      //   let size = { width: newWidth, height: height };
+      //   this.updateElementPAS({ position, size });
+      //   return;
+      // }
+      // if (this._activePoint === "ml" || this._activePoint === "rm") {
+      //   // 水平方向 resize, 不会改变高度
+      //   let size = { width: newWidth, height: height };
+      //   this.updateElementPAS({ position, size });
+      //   return;
+      // }
+      // // 斜向 resize, 方式一样, 统一处理
+      // if (this._activePoint === "tl" || this._activePoint === "br") {
+      //   // \ 斜向 resize
+      //   let size = { width: newWidth, height: height };
+      //   this.updateElementPAS({ position, size });
+      // }
     },
+
+
     resizeStart(event) {
       if (!this.isResizing) return ;
       event.stopPropagation && event.stopPropagation();
     },
-    handleToResize(point, event) {
-      this.isResizing = true;
-      console.log(event);
-      const currentSize = { width: event.target.parentNode.offsetWidth, height: event.target.parentNode.offsetHeight };
-      event.stopPropagation();
-      if (point === "tm" || point === "bm") {
-        // 垂直方向 resize
-        return;
-      }
-      if (point === "ml" || point === "rm") {
-        // 水平方向 resize
-        return;
-      }
-      if (point === "tl" || point === "br") {
-        // \ 斜向 resize
-        return;
-      }
-      // / 斜向 resize
-    },
-    handleToMove(event) {
-      // event.stopPropagation();
-      this.isMoving = true;
-      this._currentPosition = {
-        x: event.target.offsetLeft,
-        y: event.target.offsetTop,
-        mouseX: event.clientX,
-        mouseY: event.clientY
-        // mouseX: Math.floor(event.offsetX * this.scale),
-        // mouseY: Math.floor(event.offsetY * this.scale)
-      }
-      console.log(this._currentPosition);
-    }
   },
   mounted() {
     this._parentNodeSize = this.$el.parentNode ? ({
       width: this.$el.parentNode.clientWidth,
       height: this.$el.parentNode.clientHeight
     }) : null;
-    console.log(this.$el.parentNode);
-    console.log(this._parentNodeSize);
+
     this.$el.parentNode && this.$el.parentNode.addEventListener("mousemove", this.onMouseMoving);
     this.$el.parentNode && this.$el.parentNode.addEventListener("touchmove", this.onMouseMoving, true);
 
