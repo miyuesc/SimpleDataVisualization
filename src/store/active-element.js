@@ -1,7 +1,7 @@
 const activeElement = {
   namespaced: true,
   state: () => ({
-    position: { left: 40, top: 40 }, // 位置
+    position: { left: 234, top: 123 }, // 位置
     size: { width: 420, height: 250 }, // 大小
     visible: true, // 显示状态
     moving: true // 是否移动 => 是否显示指示线
