@@ -1,6 +1,8 @@
 <template>
-  <div class="drag-guide-line vertical-line" v-show="moving" v-bind:style="verticalStyle"></div>
-  <div class="drag-guide-line horizontal-line" v-show="moving" v-bind:style="horizontalStyle"></div>
+  <div class="drag-guide-line vertical-line l-vertical-line" v-show="moving" v-bind:style="verticalStyleL"></div>
+  <div class="drag-guide-line vertical-line r-vertical-line" v-show="moving" v-bind:style="verticalStyleR"></div>
+  <div class="drag-guide-line horizontal-line t-horizontal-line" v-show="moving" v-bind:style="horizontalStyleT"></div>
+  <div class="drag-guide-line horizontal-line b-horizontal-line" v-show="moving" v-bind:style="horizontalStyleB"></div>
 </template>
 
 <script>
@@ -16,11 +18,21 @@ export default {
 
     return {
       moving: computed(() => activeElementState.moving),
-      verticalStyle: computed(() => {
-        return `top: 0px; left: ${activeElementState.position.left}px; width: ${activeElementState.size.width}px; height: 100%; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
+      verticalStyleL: computed(() => {
+        let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
+        return `left: ${activeElementState.position.left}px; border-width: 0; border-right-width: ${ borderWidth }px`
       }),
-      horizontalStyle: computed(() => {
-        return `top: ${activeElementState.position.top}px; left: 0px; width: 100%; height: ${activeElementState.size.height}px; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
+      verticalStyleR: computed(() => {
+        let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
+        return `left: ${activeElementState.position.left + activeElementState.size.width + borderWidth }px; border-width: 0; border-right-width: ${ borderWidth }px`
+      }),
+      horizontalStyleT: computed(() => {
+        let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
+        return `top: ${activeElementState.position.top}px; border-width: 0; border-bottom-width: ${ borderWidth }px`
+      }),
+      horizontalStyleB: computed(() => {
+        let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
+        return `top: ${activeElementState.position.top + activeElementState.size.height + borderWidth}px; border-width: 0; border-bottom-width: ${ borderWidth }px`
       })
     }
   }
@@ -31,19 +43,21 @@ export default {
 .drag-guide-line {
   position: absolute;
   background: none;
-  /*box-sizing: border-box;*/
   outline: none;
+  box-sizing: border-box;
   pointer-events: none;
-  border-color: #c81414;
   border-style: dashed;
+  border-color: #c81414;
   z-index: 1;
 }
 .vertical-line {
-  border-top: none;
-  border-bottom: none;
+  top: 0;
+  bottom: 0;
+  width: 0;
 }
 .horizontal-line {
-  border-left: none;
-  border-right: none;
+  left: 0;
+  right: 0;
+  height: 0;
 }
 </style>

@@ -14,6 +14,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
+import {throttle} from "../../utils/common-utils";
 
 export default {
   name: "DragIndicatorPoints",
@@ -43,7 +44,7 @@ export default {
     const indicatorAreaStyle = computed(() => {
       let { size: { width, height }, position: { left, top } } = activeElementState;
       console.log("newSize:", width, height);
-      return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px`
+      return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
     })
     const pointsScale = computed(() => {
       return `transform: scale(${ 1 / editorScreenState.scale })`;
@@ -122,8 +123,7 @@ export default {
       if (left + this.size.width > this._parentNodeSize.width) left = this._parentNodeSize.width - this.size.width;
       if (top < 0) top = 0;
       if (top + this.size.height > this._parentNodeSize.height) top = this._parentNodeSize.height - this.size.height;
-      // this.updateElementPosition({ top, left });
-      this.updateActiveElementState("position", { top, left });
+      this._throttleUpdate("position", { top, left });
     },
     // 计算移动距离，更新元素大小及位置
     computedElementSize(event) {
@@ -167,7 +167,8 @@ export default {
       }
       // 右上, x、newLeft 不变
       if (this._activePoint === "tr") {
-        newWidth = isLegalX ? width + offsetX : this._parentNodeSize.width - x;
+        let maxWidth = this._parentNodeSize.width - x;
+        newWidth = width + offsetX > maxWidth ? maxWidth : width + offsetX;
         newWidth < 0 && (newWidth = 0);
         newHeight = isLegalY ? height - offsetY : height + y;
         if (newHeight > 0) {
@@ -177,9 +178,15 @@ export default {
           newHeight = 0;
         }
       }
-      // 左中
-      if (this._activePoint === "ml") {}
-      // 右中
+      // 左中, y、newTop、newHeight 不变
+      if (this._activePoint === "ml") {
+        let maxWidth = width + x;
+        newWidth = width - offsetX > maxWidth ? maxWidth : width - offsetX;
+        newLeft = width - offsetX > maxWidth ? 0 : newLeft + offsetX;
+        newWidth <= 0 && (newWidth = 0);
+        newWidth <= 0 && (newLeft = maxWidth);
+      }
+      // 右中, y、newTop、newHeight 不变
       if (this._activePoint === "mr") {}
       // 下左
       if (this._activePoint === "bl") {}
@@ -192,7 +199,7 @@ export default {
         position: { left: newLeft, top: newTop },
         size: { width: newWidth || 0, height: newHeight || 0 }
       }
-      this.updateActiveElementState("pas", newPAS);
+      this._throttleUpdate("pas", newPAS);
     },
     // 状态统一更新
     updateActiveElementState(type, state) {
@@ -211,6 +218,8 @@ export default {
       width: this.$el.parentNode.clientWidth,
       height: this.$el.parentNode.clientHeight
     }) : null;
+
+    this._throttleUpdate = throttle(this.updateActiveElementState, 10);
 
     document.documentElement.addEventListener("mousemove", this.onMouseMoving);
     document.documentElement.addEventListener("touchmove", this.onMouseMoving, true);
@@ -232,9 +241,10 @@ export default {
 .drag-indicator-area {
   position: absolute;
   background: none;
-  box-sizing: border-box;
+  //box-sizing: border-box;
   outline: none;
-  border: 2px solid #4a71fe;
+  border-style: solid;
+  border-color: #4a71fe;
   z-index: 2;
   user-select: none;
 }
