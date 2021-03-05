@@ -155,7 +155,7 @@ export default {
           newHeight = 0;
         }
       }
-      // 中上, 纵向改变
+      // 中上, newLeft, newWidth 不变
       if (this._activePoint === "tc") {
         newHeight = isLegalY ? height - offsetY : height + y;
         if (newHeight > 0) {
@@ -165,11 +165,11 @@ export default {
           newHeight = 0;
         }
       }
-      // 右上, x、newLeft 不变
+      // 右上, newLeft 不变
       if (this._activePoint === "tr") {
         let maxWidth = this._parentNodeSize.width - x;
         newWidth = width + offsetX > maxWidth ? maxWidth : width + offsetX;
-        newWidth < 0 && (newWidth = 0);
+        newWidth <= 0 && (newWidth = 0);
         newHeight = isLegalY ? height - offsetY : height + y;
         if (newHeight > 0) {
           newTop = isLegalY ? y + offsetY : 0;
@@ -178,7 +178,7 @@ export default {
           newHeight = 0;
         }
       }
-      // 左中, y、newTop、newHeight 不变
+      // 左中, newTop、newHeight 不变
       if (this._activePoint === "ml") {
         let maxWidth = width + x;
         newWidth = width - offsetX > maxWidth ? maxWidth : width - offsetX;
@@ -186,14 +186,38 @@ export default {
         newWidth <= 0 && (newWidth = 0);
         newWidth <= 0 && (newLeft = maxWidth);
       }
-      // 右中, y、newTop、newHeight 不变
-      if (this._activePoint === "mr") {}
-      // 下左
-      if (this._activePoint === "bl") {}
-      // 下中
-      if (this._activePoint === "bc") {}
-      // 下右
-      if (this._activePoint === "br") {}
+      // 右中, newTop、newHeight、newLeft 不变
+      if (this._activePoint === "mr") {
+        let maxWidth = this._parentNodeSize.width - x;
+        newWidth = width + offsetX < maxWidth ? width + offsetX : maxWidth;
+        newWidth <= 0 && (newWidth = 0);
+      }
+      // 下左, newTop 不变
+      if (this._activePoint === "bl") {
+        let maxWidth = width + x;
+        newWidth = width - offsetX > maxWidth ? maxWidth : width - offsetX;
+        newLeft = width - offsetX > maxWidth ? 0 : newLeft + offsetX;
+        newWidth <= 0 && (newWidth = 0);
+        newWidth <= 0 && (newLeft = maxWidth);
+        let maxHeight = this._parentNodeSize.height - y;
+        newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
+        newHeight <= 0 && (newHeight = 0);
+      }
+      // 下中, newWidth, newTop 不变
+      if (this._activePoint === "bc") {
+        let maxHeight = this._parentNodeSize.height - y;
+        newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
+        newHeight <= 0 && (newHeight = 0);
+      }
+      // 下右, newTop, newLeft 不变
+      if (this._activePoint === "br") {
+        let maxWidth = this._parentNodeSize.width - x;
+        newWidth = width + offsetX < maxWidth ? width + offsetX : maxWidth;
+        newWidth <= 0 && (newWidth = 0);
+        let maxHeight = this._parentNodeSize.height - y;
+        newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
+        newHeight <= 0 && (newHeight = 0);
+      }
 
       let newPAS = {
         position: { left: newLeft, top: newTop },
