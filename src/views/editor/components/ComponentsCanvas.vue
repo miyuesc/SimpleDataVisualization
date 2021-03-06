@@ -1,42 +1,29 @@
 <template>
-  <div v-for="cp in components" :key="cp.id" :class="`cp cp__${cp.id}`" :style="cpStyleCompute(cp)" @click="handleClickElement(cp)"></div>
+  <drag-resize-indicator v-for="cpt in components" :key="cpt.id" :class="`cp cp__${cpt.id}`" :details="cpt">
+    <p>{{ cpt.id }}</p>
+  </drag-resize-indicator>
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
 
+import DragResizeIndicator from "@/components/drag-cover/DragResizeIndicator.vue";
+
 export default {
   name: "ComponentsCanvas",
+  components: { DragResizeIndicator },
   setup() {
     const store = useStore();
-    const activeElementState = store.state.activeElement
-    const editorScreenState = store.state.editorScreen;
     const componentsState = store.state.components;
 
-    const components = computed(() => componentsState.components);
-    const cpStyleCompute = computed(() => {
-      return (cp) => {
-        let { size: { width, height }, position: { left, top } } = cp;
-        return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px`;
-      }
-    })
-
-    const handleClickElement = ({ size, position }) => {
-      console.log(activeElementState.state);
-      let newElementState = {
-        position: { ...position },
-        size: { ...size },
-        moving: false,
-        visible: true
-      };
-      store.commit("activeElement/updateAll", newElementState);
-    }
+    const components = computed(() => {
+      console.log("components: ", componentsState.components);
+      return componentsState.components;
+    });
 
     return {
-      components,
-      cpStyleCompute,
-      handleClickElement
+      components
     }
   }
 }
@@ -44,9 +31,6 @@ export default {
 
 <style lang="scss">
 .cp {
-  display: inline-block;
-  box-sizing: border-box;
-  position: absolute;
   background: #00b9ff55;
 }
 </style>

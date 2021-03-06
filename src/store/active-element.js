@@ -5,8 +5,8 @@ const activeElement = {
     size: { width: 420, height: 250 }, // 大小
     id: "",
     index: -1,
-    visible: true, // 显示状态
-    moving: true // 是否移动 => 是否显示指示线
+    visible: false, // 显示状态
+    moving: false // 是否移动 => 是否显示指示线
   }),
   getters: {
     activeElementState(state) {
