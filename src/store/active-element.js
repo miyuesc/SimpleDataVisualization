@@ -3,6 +3,8 @@ const activeElement = {
   state: () => ({
     position: { left: 234, top: 123 }, // 位置
     size: { width: 420, height: 250 }, // 大小
+    id: "",
+    index: -1,
     visible: true, // 显示状态
     moving: true // 是否移动 => 是否显示指示线
   }),
@@ -13,7 +15,13 @@ const activeElement = {
   },
   mutations: {
     updateAll(state, newState) {
-      state = JSON.parse(JSON.stringify(newState));
+      // state = JSON.parse(JSON.stringify(newState));
+      state.position = { ...newState.position }; // position and size
+      state.size = { ...newState.size };
+      state.visible = newState.visible;
+      state.moving = newState.moving;
+      state.id = newState.id;
+      state.index = newState.index;
     },
     updatePAS(state, newPAS) {
       state.position = { ...newPAS.position }; // position and size
@@ -30,6 +38,10 @@ const activeElement = {
     },
     updateMoving(state, moving) {
       state.moving = moving;
+    },
+    updateBase(state, id, index) {
+      state.id = id;
+      state.index = index;
     }
   }
 }

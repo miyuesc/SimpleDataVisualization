@@ -14,7 +14,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
-import {throttle} from "../../utils/common-utils";
+import { throttle } from "../../utils/common-utils";
 
 export default {
   name: "DragIndicatorPoints",
@@ -43,7 +43,6 @@ export default {
     const position = computed(() => activeElementState.position);
     const indicatorAreaStyle = computed(() => {
       let { size: { width, height }, position: { left, top } } = activeElementState;
-      console.log("newSize:", width, height);
       return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px; border-width: ${Math.floor(2 / editorScreenState.scale)}px`
     })
     const pointsScale = computed(() => {
@@ -229,13 +228,7 @@ export default {
     updateActiveElementState(type, state) {
       (type === "position") && (this.updateElementPosition(state));
       (type === "pas") && (this.updateElementPAS(state));
-    },
-
-
-    resizeStart(event) {
-      if (!this.isResizing) return ;
-      event.stopPropagation && event.stopPropagation();
-    },
+    }
   },
   mounted() {
     this._parentNodeSize = this.$el.parentNode ? ({
@@ -252,8 +245,8 @@ export default {
     document.documentElement.addEventListener("touchend touchcancel", this.onMouseUp, true);
   },
   beforeUnmount() {
-    document.documentElement.removeEventListener("mousemove", this.resizeStart);
-    document.documentElement.removeEventListener("touchmove", this.resizeStart, true);
+    document.documentElement.removeEventListener("mousemove", this.onMouseMoving);
+    document.documentElement.removeEventListener("touchmove", this.onMouseMoving, true);
 
     document.documentElement.removeEventListener("mouseup", this.onMouseUp);
     document.documentElement.removeEventListener("touchend touchcancel", this.onMouseUp, true);
@@ -271,6 +264,7 @@ export default {
   border-color: #4a71fe;
   z-index: 2;
   user-select: none;
+  pointer-events: auto;
 }
 .indicator-point {
   position: absolute;
@@ -283,6 +277,7 @@ export default {
   background: #ffffff;
   z-index: 3;
   user-select: none;
+  pointer-events: auto;
 }
 .indicator-point-tl {
   top: -4px;

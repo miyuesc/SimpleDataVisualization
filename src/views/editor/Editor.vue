@@ -4,8 +4,8 @@
       header content
     </header>
     <main class="editor-main">
-<!--      <aside class="editor-aside"></aside>-->
-<!--      <aside class="editor-context-pad"></aside>-->
+      <aside class="editor-aside"></aside>
+      <aside class="editor-context-pad"></aside>
       <div class="editor-control-bar">
         <simple-controller />
       </div>
@@ -14,9 +14,11 @@
           <!-- 背景元素区域 -->
           <div class="editor-wrapper-area" :style="screenStyle"></div>
           <!-- 元素存在区域 -->
-          <div class="editor-canvas-area" :style="screenStyle"></div>
+          <div class="editor-canvas-area" :style="screenStyle">
+            <components-canvas />
+          </div>
           <!-- 指示器区域 -->
-          <div class="editor-indicator-area" :style="screenStyle">
+          <div class="editor-indicator-area" :style="screenStyle" @click="handleClickBackground">
             <drag-guide-lines />
             <drag-indicator-points />
           </div>
@@ -33,21 +35,30 @@ import { computed } from "vue";
 import DragGuideLines from "@/components/drag-cover/DragGuideLines.vue";
 import DragIndicatorPoints from "@/components/drag-cover/DragIndicatorPoints.vue";
 import SimpleController from "@/components/editor-control-bar/SimpleController.vue";
+import ComponentsCanvas from "./components/ComponentsCanvas.vue";
 
 export default {
   name: "Editor",
-  components: { SimpleController, DragIndicatorPoints, DragGuideLines },
+  components: { ComponentsCanvas, SimpleController, DragIndicatorPoints, DragGuideLines },
   setup() {
     const store = useStore();
     const activeElementState = store.state.activeElement;
     const editorScreenState = store.state.editorScreen;
 
+    const screenStyle = computed(() => {
+      let { scale } = editorScreenState;
+      return `transform: scale(${scale});`
+    })
+
+    const handleClickBackground = () => {
+      let newElementState = { position: { left: 0, top: 0 }, size: { width: 1920, height: 1080 }, moving: false, visible: false };
+      store.commit("activeElement/updateAll", newElementState);
+    }
+
     return {
       ...activeElementState,
-      screenStyle: computed(() => {
-        let { scale, position: { top , left } } = editorScreenState;
-        return `transform: scale(${scale})`
-      })
+      screenStyle,
+      handleClickBackground
     }
   }
 }
