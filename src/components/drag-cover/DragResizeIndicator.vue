@@ -111,10 +111,11 @@ export default {
     }
     // 计算移动距离，更新元素位置
     const computedElementPosition = (event) => {
+      let { size } = props.details.size;
       // 根据鼠标移动距离更新元素的当前位置
       let { x, y, mouseX, mouseY } = _currentPosition;
-      let left = x + (event.clientX - mouseX) / this.scale;
-      let top = y + (event.clientY - mouseY) / this.scale;
+      let left = x + (event.clientX - mouseX) / scale;
+      let top = y + (event.clientY - mouseY) / scale;
       // 判断是否还在可视区域内, 不在则重设为合法数值
       if (left < 0) left = 0;
       if (left + size.width > parentNodeSize.width) left = parentNodeSize.width - size.width;
@@ -164,7 +165,7 @@ export default {
       }
       // 右上, newLeft 不变
       if (_activePoint === "tr") {
-        let maxWidth = this.parentNodeSize.width - x;
+        let maxWidth = parentNodeSize.width - x;
         newWidth = width + offsetX > maxWidth ? maxWidth : width + offsetX;
         newWidth <= 0 && (newWidth = 0);
         newHeight = isLegalY ? height - offsetY : height + y;
@@ -185,7 +186,7 @@ export default {
       }
       // 右中, newTop、newHeight、newLeft 不变
       if (_activePoint === "mr") {
-        let maxWidth = this.parentNodeSize.width - x;
+        let maxWidth = parentNodeSize.width - x;
         newWidth = width + offsetX < maxWidth ? width + offsetX : maxWidth;
         newWidth <= 0 && (newWidth = 0);
       }
@@ -196,22 +197,22 @@ export default {
         newLeft = width - offsetX > maxWidth ? 0 : newLeft + offsetX;
         newWidth <= 0 && (newWidth = 0);
         newWidth <= 0 && (newLeft = maxWidth);
-        let maxHeight = this.parentNodeSize.height - y;
+        let maxHeight = parentNodeSize.height - y;
         newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
         newHeight <= 0 && (newHeight = 0);
       }
       // 下中, newWidth, newTop 不变
       if (_activePoint === "bc") {
-        let maxHeight = this.parentNodeSize.height - y;
+        let maxHeight = parentNodeSize.height - y;
         newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
         newHeight <= 0 && (newHeight = 0);
       }
       // 下右, newTop, newLeft 不变
       if (_activePoint === "br") {
-        let maxWidth = this.parentNodeSize.width - x;
+        let maxWidth = parentNodeSize.width - x;
         newWidth = width + offsetX < maxWidth ? width + offsetX : maxWidth;
         newWidth <= 0 && (newWidth = 0);
-        let maxHeight = this.parentNodeSize.height - y;
+        let maxHeight = parentNodeSize.height - y;
         newHeight = height + offsetY < maxHeight ? height + offsetY : maxHeight;
         newHeight <= 0 && (newHeight = 0);
       }
@@ -266,6 +267,7 @@ export default {
       width: this.$el.parentNode.clientWidth,
       height: this.$el.parentNode.clientHeight
     }) : null;
+    console.log(this.size, this.position);
   }
 }
 </script>
