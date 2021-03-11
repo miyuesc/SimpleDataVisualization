@@ -1,5 +1,5 @@
 <template>
-  <drag-resize-indicator v-for="cpt in components" :key="cpt.id" :class="`cp cp__${cpt.id}`" :details="cpt">
+  <drag-resize-indicator v-for="(cpt, index) in components" :key="cpt.id" :class="`cp cp__${cpt.id}`" :details="cpt" :index="index">
     <p>{{ cpt.id }}</p>
   </drag-resize-indicator>
 </template>

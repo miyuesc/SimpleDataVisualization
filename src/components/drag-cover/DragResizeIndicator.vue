@@ -13,16 +13,17 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onBeforeUnmount } from "vue";
+import { computed, reactive, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { throttle } from "../../utils/common-utils";
 
 export default {
   name: "DragIndicatorPoints",
-  props: { details: Object },
+  props: { details: Object, index: Number },
   setup(props, context) {
     const store = useStore();
     const editorScreenState = store.state.editorScreen;
+    const activeElementState = store.state.activeElement;
     /*
      * [ tl --- tc --- tr ]
      * [  |             | ]
@@ -32,43 +33,32 @@ export default {
      */
     const points = ["tl", "tc", "tr", "ml", "mr", "bl", "bc", "br"]; // 左上角开始顺时针对应的各个指示点
     /* 变量 */
-    const isResizing = ref(false);
-    const isMoving = ref(false);
-    const size = props.details.size.value;
-    const position = props.details.position.value;
-    let parentNodeSize, _activePoint, _currentPAS, _currentPosition, _throttleUpdate;
+    const parentNodeSize = reactive({ width: 0, height: 0 });
+    let _activePoint, _currentPAS, _currentPosition, _throttleUpdate;
     /* 计算属性 */
     const scale = computed(() => editorScreenState.scale);
-    const componentsIndex = computed(() => props.details.index);
     const indicatorAreaStyle = computed(() => {
       let { width, height } = props.details.size;
       let { left, top } = props.details.position;
-      let bgColor = props.details.visible ? "#4a71fe" : "#4a71fe00";
+      let bgColor = activeElementState.id === props.details.id ? "#4a71fe" : "#4a71fe00";
       let borderWidth = Math.floor(2 / editorScreenState.scale);
       return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px; border-color: ${ bgColor }; border-width: ${ borderWidth }px`
     })
     const pointsStyle = computed(() => {
-      let display = props.details.visible ? "block" : "none";
+      let display = activeElementState.id === props.details.id ? "block" : "none";
       return `transform: scale(${ 1 / editorScreenState.scale }); display: ${ display }`;
     })
     /* 方法 */
     const updateElementPosition = position => store.commit("activeElement/updatePosition", position);
     const updateElementPAS = pas => store.commit("activeElement/updatePAS", pas);
-    const selectedElement = cp => {
-      let newState = {
-        ...cp,
-        size: { width: cp.size.width, height: cp.size.height },
-        position: { left: cp.position.left, top: cp.position.top },
-        moving: false,
-        visible: true
-      };
-      console.log(newState);
-      store.commit("components/update", { newState, index: componentsIndex });
+    const selectedElement = () => {
+      let newState = { ...JSON.parse(JSON.stringify(props.details)), visible: true, moving: false};
+      store.commit("components/update", { newState, index: props.index });
+      store.commit("activeElement/updateAll", newState);
     }
     // 鼠标按下，触发 resize 事件
     const handleToResize = (point, event) => {
       event.stopPropagation();
-      isResizing.value = true;
       _activePoint = point;
       _currentPAS = {
         x: event.target.parentNode.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
@@ -81,8 +71,7 @@ export default {
     }
     // 鼠标按下，触发 move 事件
     const handleSelectAndReadyMove = (event) => {
-      isMoving.value = true;
-      selectedElement(props.details);
+      selectedElement();
       _currentPosition = {
         x: event.target.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
         y: event.target.offsetTop, // 鼠标所在元素 距离父元素上侧 的距离
@@ -243,11 +232,7 @@ export default {
     return {
       parentNodeSize,
       points,
-      isResizing,
-      isMoving,
       scale,
-      size,
-      position,
       pointsStyle,
       indicatorAreaStyle,
       updateElementPosition,
@@ -267,7 +252,8 @@ export default {
       width: this.$el.parentNode.clientWidth,
       height: this.$el.parentNode.clientHeight
     }) : null;
-    console.log(this.size, this.position);
+
+    console.log(this.parentNodeSize);
   }
 }
 </script>
