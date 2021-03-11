@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { computed, ref, onMounted, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
 import { throttle } from "../../utils/common-utils";
 
 export default {
