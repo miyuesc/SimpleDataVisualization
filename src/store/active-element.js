@@ -1,8 +1,8 @@
 const activeElement = {
   namespaced: true,
   state: () => ({
-    position: { left: 234, top: 123 }, // 位置
-    size: { width: 420, height: 250 }, // 大小
+    position: { left: 0, top: 0 }, // 位置
+    size: { width: 0, height: 0 }, // 大小
     id: "",
     index: -1,
     visible: false, // 显示状态
