@@ -24,7 +24,7 @@ export default {
       }),
       verticalStyleR: computed(() => {
         let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
-        return `left: ${activeElementState.position.left + activeElementState.size.width + borderWidth }px; border-width: 0; border-right-width: ${ borderWidth }px`
+        return `left: ${activeElementState.position.left + activeElementState.size.width - borderWidth }px; border-width: 0; border-right-width: ${ borderWidth }px`
       }),
       horizontalStyleT: computed(() => {
         let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
@@ -32,7 +32,7 @@ export default {
       }),
       horizontalStyleB: computed(() => {
         let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
-        return `top: ${activeElementState.position.top + activeElementState.size.height + borderWidth}px; border-width: 0; border-bottom-width: ${ borderWidth }px`
+        return `top: ${activeElementState.position.top + activeElementState.size.height - borderWidth}px; border-width: 0; border-bottom-width: ${ borderWidth }px`
       })
     }
   }
@@ -47,7 +47,7 @@ export default {
   box-sizing: border-box;
   pointer-events: none;
   border-style: dashed;
-  border-color: #c81414;
+  border-color: #c8141499;
   z-index: 1;
 }
 .vertical-line {

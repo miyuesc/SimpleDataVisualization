@@ -5,6 +5,13 @@ const editorScreen = {
     position: {
       left: 15,
       top: 15
+    },
+    // 坐标
+    mousedownCoordinator: {
+      x: 0,
+      y: 0,
+      mouseX: 0,
+      mouseY: 0
     }
   }),
   mutations: {
@@ -16,6 +23,9 @@ const editorScreen = {
     },
     updatePosition(state, newPosition) {
       state.position = { ...newPosition };
+    },
+    updateMDC(state, newMDC) {
+      state.mousedownCoordinator = JSON.parse(JSON.stringify(newMDC));
     }
   }
 }

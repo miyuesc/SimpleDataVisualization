@@ -12,16 +12,11 @@
       <div class="editor-content">
         <div class="screen">
           <!-- 背景元素区域 -->
-          <div class="editor-wrapper-area" :style="screenStyle" @click="handleClickBackground"></div>
+          <div class="editor-wrapper-area" :style="screenStyle"></div>
           <!-- 元素存在区域 -->
-          <div class="editor-canvas-area" :style="screenStyle">
-            <drag-guide-lines />
-            <components-canvas />
-          </div>
+          <components-canvas :cp-style="screenStyle" />
           <!-- 指示器区域 -->
-<!--          <div class="editor-indicator-area" :style="screenStyle" @click="handleClickBackground">-->
-<!--            <drag-resize-indicator />-->
-<!--          </div>-->
+          <handlers-canvas :cp-style="screenStyle" />
         </div>
       </div>
     </main>
@@ -32,13 +27,13 @@
 import { useStore } from "vuex";
 import { computed } from "vue";
 
-import DragGuideLines from "@/components/drag-cover/DragGuideLines.vue";
-import SimpleController from "@/components/editor-control-bar/SimpleController.vue";
+import SimpleController from "../../components/editor-control-bar/SimpleController.vue";
 import ComponentsCanvas from "./components/ComponentsCanvas.vue";
+import HandlersCanvas from "./components/HanldersCanvas.vue";
 
 export default {
   name: "Editor",
-  components: { ComponentsCanvas, SimpleController, DragGuideLines },
+  components: { HandlersCanvas, ComponentsCanvas, SimpleController },
   setup() {
     const store = useStore();
     const activeElementState = store.state.activeElement;

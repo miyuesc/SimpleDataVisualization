@@ -1,11 +1,10 @@
 <template>
-  <div class="drag-indicator-area" :style="indicatorAreaStyle" @mousedown="handleSelectAndReadyMove($event)" @click="$emit('click')">
+  <div class="drag-indicator-area" :style="indicatorAreaStyle">
     <span
       v-for="point in points"
       :key="point"
       :class="`indicator-point indicator-point-${point}`"
       :style="pointsStyle"
-      :ref="`point-${point}-ref`"
       @mousedown.stop.prevent="handleToResize(point, $event)"
     ></span>
     <slot></slot>
@@ -19,69 +18,65 @@ import { debounce, throttle } from "../../utils/common-utils";
 
 export default {
   name: "DragIndicatorPoints",
-  props: { details: Object, index: Number },
-  setup(props, context) {
+  setup(props) {
     const store = useStore();
     const editorScreenState = store.state.editorScreen;
     const activeElementState = store.state.activeElement;
     /*
+     * 边框上的点标记，可触发 resize
      * [ tl --- tc --- tr ]
      * [  |             | ]
      * [ ml            mr ]
      * [  |             | ]
      * [ bl --- bc --- br ]
      */
-    const points = ["tl", "tc", "tr", "ml", "mr", "bl", "bc", "br"]; // 左上角开始顺时针对应的各个指示点
+    const points = ["tl", "tc", "tr", "ml", "mr", "bl", "bc", "br"];
 
-    /* 变量 */
-    const parentNodeSize = reactive({ width: 0, height: 0 });
-    const isResizing = ref(false);
-    const isMoving = ref(false);
-    let activePoint, currentPAS, currentPosition;
-    // 状态统一更新
-    const updateActiveElementState = (type, state) => {
-      (type === "position") && (updateElementPosition({ position: { ...state} }));
-      (type === "pas") && (updateElementPAS(state));
-    }
+    // 变量
+    const parentNodeSize = reactive({ width: 0, height: 0 }); // 父元素的高宽
+    const isResizing = ref(false); // 是否在重置大小
+    const isMoving = computed(() => activeElementState.moving);
+    const mousedownMDC = computed(() => editorScreenState.mousedownCoordinator);
+    let activePoint; // 当前激活的某个 point
+    let currentPAS; // 改变之前的大小
 
-    const throttleUpdate = throttle(updateActiveElementState, 10);
+    // // vuex 缓存更新方法
+    const updateActiveElementState = newState => store.commit("activeElement/updateAll", newState);
+    const throttleActiveUpdate = throttle(updateActiveElementState,5);
+    const updateComponentInList = newState => store.commit("components/update", { newState, index: activeElementState.index });
+    const debounceComponentUpdate = debounce(updateComponentInList, 50);
+    const throttleComponentUpdate = debounce(updateComponentInList, 5);
 
-    /* 计算属性 */
+    const throttleUpdate = throttle((newState) => {
+      updateActiveElementState(newState);
+      updateComponentInList(newState);
+    }, 5)
+    //
+    // 样式计算属性
     const scale = computed(() => editorScreenState.scale); // 缩放
-    const isActive = computed(() => activeElementState.id === props.details.id); // 是否当前激活元素
+    const isActive = computed(() => activeElementState.visible); // 是否当前激活元素
     // border 样式
     const indicatorAreaStyle = computed(() => {
-      let { size: { width, height }, position: { left, top } } = props.details;
+      let { size: { width, height }, position: { left, top }, zIndex } = activeElementState;
       let bgColor = isActive.value ? "#4a71fe" : "#4a71fe00";
       let borderWidth = Math.floor(2 / scale.value);
-      return `width: ${ width }px; height: ${ height }px; left: ${ left }px; top: ${ top }px; border-color: ${ bgColor }; border-width: ${ borderWidth }px`
-    })
+      return {
+        width: `${ width }px`,
+        height: `${ height }px`,
+        left: `${ left }px`,
+        top: `${ top }px`,
+        borderColor: bgColor,
+        borderWidth: `${ borderWidth }px`,
+        zIndex
+      }
+    });
     // points 样式
     const pointsStyle = computed(() => {
       let display = isActive.value ? "block" : "none";
       return `transform: scale(${ 1 / scale.value }); display: ${ display }`;
-    })
+    });
 
-    /* vuex 缓存更新 */
-    // 更新位置
-    const updateElementPosition = position => selectedElement(position);
-    // 更新位置和大小
-    const updateElementPAS = pas => selectedElement(pas);
-    // 更新选中组件
-    const selectedElement = (state) => {
-      let newState;
-      if (state) {
-        newState = { ...JSON.parse(JSON.stringify(props.details)), ...state, visible: true, moving: isMoving.value };
-      } else {
-        newState = { ...JSON.parse(JSON.stringify(props.details)), visible: true, moving: false};
-      }
-      console.log(newState);
-      store.commit("activeElement/updateAll", newState);
-      store.commit("components/update", { newState, index: props.index });
-    }
-
-    /* 鼠标事件 */
-    // points 的 鼠标按下事件，触发 resize 事件, 记录初始状态
+    // 选中point并准备进行大小改变, 记录初始状态（需要阻止冒泡）
     const handleToResize = (point, event) => {
       event.stopPropagation();
       isResizing.value = true;
@@ -95,23 +90,11 @@ export default {
         mouseY: event.clientY // 鼠标处于屏幕的纵向位置
       }
     }
-    // div 的 鼠标按下事件，记录当前状态，更新激活元素
-    const handleSelectAndReadyMove = (event) => {
-      isMoving.value = true;
-      selectedElement();
-      currentPosition = {
-        x: event.target.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
-        y: event.target.offsetTop, // 鼠标所在元素 距离父元素上侧 的距离
-        mouseX: event.clientX, // 鼠标处于屏幕的横向位置
-        mouseY: event.clientY // 鼠标处于屏幕的纵向位置
-      }
-    }
     // 鼠标移动状态
     const onMouseMoving = (event) => {
       // 非 moving 或者 resizing 状态 直接返回
       if (!isResizing.value && !isMoving.value) return;
-      // 拖拽移动部分
-      if (isMoving.value) {
+      if (isMoving.value)  {
         computedElementPosition(event);
         return;
       }
@@ -123,25 +106,11 @@ export default {
       if (!isResizing.value && !isMoving.value) return;
       activePoint = null;
       isResizing.value = false;
-      isMoving.value = false;
-      selectedElement();
-    }
-    // 计算移动距离，更新元素位置
-    const computedElementPosition = (event) => {
-      let { size: { width, height } } = props.details;
-      // 根据鼠标移动距离更新元素的当前位置
-      let { x, y, mouseX, mouseY } = currentPosition;
-      let left = x + (event.clientX - mouseX) / scale.value;
-      let top = y + (event.clientY - mouseY) / scale.value;
-      // 判断是否还在可视区域内, 不在则重设为合法数值
-      if (left < 0) left = 0;
-      if (left + width > parentNodeSize.width) left = parentNodeSize.width - width;
-      if (top < 0) top = 0;
-      if (top + height > parentNodeSize.height) top = parentNodeSize.height - height;
-      throttleUpdate("position", { top, left });
+      updateActiveElementState({ ...activeElementState, moving: false });
+      updateComponentInList({ ...activeElementState, moving: false });
     }
     // 计算移动距离，更新元素大小及位置
-    const computedElementSize = (event) => {
+    const computedElementSize = event => {
       let { x, y, width, height, mouseX, mouseY } = currentPAS;
       let newWidth = width;
       let newHeight = height;
@@ -238,40 +207,50 @@ export default {
         position: { left: newLeft, top: newTop },
         size: { width: newWidth || 0, height: newHeight || 0 }
       }
-      throttleUpdate("pas", newPAS);
+
+      throttleActiveUpdate({ ...activeElementState, ...newPAS });
+      debounceComponentUpdate({ ...activeElementState, ...newPAS });
+    }
+    // 计算移动距离，重设元素位置
+    const computedElementPosition = event => {
+      let { size: { width, height } } = activeElementState;
+      // 根据鼠标移动距离更新元素的当前位置
+      let { x, y, mouseX, mouseY } = mousedownMDC.value;
+      let newLeft = x + (event.clientX - mouseX) / scale.value;
+      let newTop = y + (event.clientY - mouseY) / scale.value;
+      // 判断是否还在可视区域内, 不在则重设为合法数值
+      if (newLeft < 0) newLeft = 0;
+      if (newLeft + width > parentNodeSize.width) newLeft = parentNodeSize.width - width;
+      if (newTop < 0) newTop = 0;
+      if (newTop + height > parentNodeSize.height) newTop = parentNodeSize.height - height;
+
+      let newPAS = {
+        position: { left: newLeft, top: newTop }
+      }
+
+      throttleUpdate({ ...activeElementState, ...newPAS });
     }
 
+
+    // 生命周期钩子, 事件监听器的初始化与移除, 更新父元素状态
     onMounted(() => {
       const { ctx: instance} = getCurrentInstance();
       parentNodeSize.width = instance.$el.parentNode.clientWidth;
       parentNodeSize.height = instance.$el.parentNode.clientHeight;
+      document.documentElement.addEventListener("mousedown", (e) => (console.log(e)));
       document.documentElement.addEventListener("mousemove", onMouseMoving);
       document.documentElement.addEventListener("mouseup", onMouseUp);
     })
-    // 生命周期
     onBeforeUnmount(() => {
       document.documentElement.removeEventListener("mousemove", onMouseMoving);
       document.documentElement.removeEventListener("mouseup", onMouseUp);
     })
 
     return {
-      // parentNodeSize,
-      // activePoint, currentPAS, currentPosition, throttleUpdate,
       points,
-      // scale,
-      // isMoving,
-      // isActive,
-      pointsStyle,
       indicatorAreaStyle,
-      // updateElementPosition,
-      // updateElementPAS,
-      // selectedElement,
-      handleToResize,
-      handleSelectAndReadyMove,
-      // onMouseMoving,
-      // onMouseUp,
-      // computedElementPosition,
-      // computedElementSize
+      pointsStyle,
+      handleToResize
     }
   }
 }
@@ -281,12 +260,12 @@ export default {
 .drag-indicator-area {
   position: absolute;
   background: none;
-  //box-sizing: border-box;
   outline: none;
+  box-sizing: border-box;
   border-style: solid;
   z-index: 2;
   user-select: none;
-  pointer-events: auto;
+  pointer-events: none;
 }
 .indicator-point {
   position: absolute;
