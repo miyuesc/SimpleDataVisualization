@@ -40,7 +40,6 @@ export default {
     const debounceActiveUpdate = debounce(updateActiveElementState,50);
 
     const changeActiveElement = (cpt, event) => {
-      console.log(1);
       let mdc = {
         x: event.target.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
         y: event.target.offsetTop, // 鼠标所在元素 距离父元素上侧 的距离
@@ -49,16 +48,12 @@ export default {
       };
       store.commit("editorScreen/updateMDC", mdc)
       updateActiveElementState({ ...cpt, visible: true, moving: true });
-
-      console.log(activeElementState.moving);
     }
     const clearHandlerVisible = () => {
-      console.log(2);
       store.commit("activeElement/updateVisible", false);
       store.commit("activeElement/updateMoving", false);
     }
     const endToMoving = cpt => {
-      console.log(3);
       updateActiveElementState({ ...cpt, visible: true, moving: false });
     }
 

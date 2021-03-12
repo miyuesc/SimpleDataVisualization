@@ -45,7 +45,6 @@ export default {
     const throttleActiveUpdate = throttle(updateActiveElementState,5);
     const updateComponentInList = newState => store.commit("components/update", { newState, index: activeElementState.index });
     const debounceComponentUpdate = debounce(updateComponentInList, 50);
-    const throttleComponentUpdate = debounce(updateComponentInList, 5);
 
     const throttleUpdate = throttle((newState) => {
       updateActiveElementState(newState);
@@ -106,8 +105,7 @@ export default {
       if (!isResizing.value && !isMoving.value) return;
       activePoint = null;
       isResizing.value = false;
-      updateActiveElementState({ ...activeElementState, moving: false });
-      updateComponentInList({ ...activeElementState, moving: false });
+      throttleUpdate({ ...activeElementState, moving: false });
     }
     // 计算移动距离，更新元素大小及位置
     const computedElementSize = event => {
