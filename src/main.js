@@ -12,3 +12,5 @@ app.use(router);
 app.use(store);
 
 app.mount("#app");
+
+import "./assets/icon/iconfont";
