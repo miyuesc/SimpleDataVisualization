@@ -4,14 +4,38 @@ const presetComponents = {
     name: "图表",
     icon: "dv-xuritu",
     children: {
-      lineCharts: {}, // 折线图
-      barCharts: {}, // 柱状/条形图
-      pieCharts: {}, // 扇形/饼图
-      radarCharts: {}, // 雷达图
-      treeCharts: {}, // 树形图
-      kCharts: {}, // K 线图
-      gaugeCharts: {}, // 仪表盘
-      funnelCharts: {} // 漏斗图
+      lineCharts: {
+        name: "折线图",
+        code: "lineChart"
+      }, // 折线图
+      barCharts: {
+        name: "条形图",
+        code: "barChart"
+      }, // 柱状/条形图
+      pieCharts: {
+        name: "饼图",
+        code: "pieChart"
+      }, // 扇形/饼图
+      radarCharts: {
+        name: "雷达图",
+        code: "radarChart"
+      }, // 雷达图
+      treeCharts: {
+        name: "树形图",
+        code: "treeChart"
+      }, // 树形图
+      kCharts: {
+        name: "K线图",
+        code: "kCharts"
+      }, // K 线图
+      gaugeCharts: {
+        name: "仪表盘",
+        code: "gaugeChart"
+      }, // 仪表盘
+      funnelCharts: {
+        name: "漏斗图",
+        code: "funnelChart"
+      } // 漏斗图
     }
   },
   // 文本

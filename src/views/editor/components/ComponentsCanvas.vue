@@ -12,8 +12,8 @@
         zIndex: cpt.zIndex
       }"
       @mousedown.stop.prevent="changeActiveElement(cpt, $event)"
-      @mouseup="endToMoving(cpt, $event)"
     >
+      <!--      @mouseup="endToMoving(cpt, $event)"-->
       <p>{{ cpt.id }}</p>
     </div>
   </div>
@@ -37,7 +37,6 @@ export default {
       return componentsState.components
     });
     const updateActiveElementState = newState => store.commit("activeElement/updateAll", newState);
-    const debounceActiveUpdate = debounce(updateActiveElementState,50);
 
     const changeActiveElement = (cpt, event) => {
       let mdc = {
@@ -53,14 +52,14 @@ export default {
       store.commit("activeElement/updateVisible", false);
       store.commit("activeElement/updateMoving", false);
     }
-    const endToMoving = cpt => {
-      updateActiveElementState({ ...cpt, visible: true, moving: false });
-    }
+    // const endToMoving = cpt => {
+    //   updateActiveElementState({ ...cpt, moving: false });
+    // }
 
     return {
       components,
       changeActiveElement,
-      endToMoving,
+      // endToMoving,
       clearHandlerVisible
     }
   }

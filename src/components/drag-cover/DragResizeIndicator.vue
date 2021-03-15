@@ -41,7 +41,7 @@ export default {
     let currentPAS; // 改变之前的大小
 
     // // vuex 缓存更新方法
-    const updateActiveElementState = newState => store.commit("activeElement/updateAll", newState);
+    const updateActiveElementState = newState => store.commit("activeElement/updatePAS", newState);
     const throttleActiveUpdate = throttle(updateActiveElementState,5);
     const updateComponentInList = newState => store.commit("components/update", { newState, index: activeElementState.index });
     const debounceComponentUpdate = debounce(updateComponentInList, 50);
@@ -94,8 +94,7 @@ export default {
       // 非 moving 或者 resizing 状态 直接返回
       if (!isResizing.value && !isMoving.value) return;
       if (isMoving.value)  {
-        computedElementPosition(event);
-        return;
+        return computedElementPosition(event);
       }
       // resize 部分
       computedElementSize(event);
@@ -105,7 +104,9 @@ export default {
       if (!isResizing.value && !isMoving.value) return;
       activePoint = null;
       isResizing.value = false;
-      throttleUpdate({ ...activeElementState, moving: false });
+      store.commit("activeElement/updateMoving", false);
+      // setTimeout(() => (store.commit("activeElement/updateMoving", false)), 10)
+      // throttleUpdate({ ...activeElementState, moving: false });
     }
     // 计算移动距离，更新元素大小及位置
     const computedElementSize = event => {
@@ -207,7 +208,7 @@ export default {
       }
 
       throttleActiveUpdate({ ...activeElementState, ...newPAS });
-      debounceComponentUpdate({ ...activeElementState, ...newPAS });
+      debounceComponentUpdate({ ...activeElementState, ...newPAS, moving: false });
     }
     // 计算移动距离，重设元素位置
     const computedElementPosition = event => {
@@ -235,7 +236,6 @@ export default {
       const { ctx: instance} = getCurrentInstance();
       parentNodeSize.width = instance.$el.parentNode.clientWidth;
       parentNodeSize.height = instance.$el.parentNode.clientHeight;
-      document.documentElement.addEventListener("mousedown", (e) => (console.log(e)));
       document.documentElement.addEventListener("mousemove", onMouseMoving);
       document.documentElement.addEventListener("mouseup", onMouseUp);
     })
