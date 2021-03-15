@@ -7,7 +7,7 @@ const path = require("path")
 export default ({ mode }) => {
 
   const IS_PROD = mode === "production";
-  console.log("\n > build mode:", `"${mode}"`);
+  console.log("\n > build mode:", `"${mode}" \n`);
 
   return {
     plugins: [vue()],
@@ -16,7 +16,7 @@ export default ({ mode }) => {
     resolve: {
       alias: {
         // 键必须以斜线开始和结束
-        "@": path.resolve(__dirname, "./src")
+        "/@": path.resolve(__dirname, "./src")
         // '/@components/': path.resolve(__dirname, './src/components')
       }
     },

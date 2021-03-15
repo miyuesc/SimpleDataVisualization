@@ -9,8 +9,8 @@
 import { useStore } from "vuex";
 import { computed } from "vue";
 
-import DragGuideLines from "@/components/drag-cover/DragGuideLines.vue";
-import DragIndicatorPoints from "@/components/drag-cover/DragResizeIndicator.vue";
+import DragGuideLines from "/@/components/drag-cover/DragGuideLines.vue";
+import DragIndicatorPoints from "/@/components/drag-cover/DragResizeIndicator.vue";
 
 export default {
   name: "HandlersCanvas",

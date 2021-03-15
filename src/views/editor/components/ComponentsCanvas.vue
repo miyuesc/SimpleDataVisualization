@@ -1,7 +1,7 @@
 <template>
   <div class="editor-canvas-area" :style="cpStyle" @mousedown="clearHandlerVisible">
     <div
-      v-for="(cpt, index) in components"
+      v-for="cpt in components"
       :key="cpt.id"
       :class="`cp cp__${cpt.id}`"
       :style="{
@@ -22,7 +22,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
-import {debounce, throttle} from "../../../utils/common-utils";
+import { debounce, throttle } from "../../../utils/common-utils";
 
 export default {
   name: "ComponentsCanvas",

@@ -4,7 +4,7 @@
       header content
     </header>
     <main class="editor-main">
-      <aside class="editor-aside"></aside>
+      <slider-bar />
       <aside class="editor-context-pad"></aside>
       <div class="editor-control-bar">
         <simple-controller />
@@ -30,10 +30,11 @@ import { computed } from "vue";
 import SimpleController from "../../components/editor-control-bar/SimpleController.vue";
 import ComponentsCanvas from "./components/ComponentsCanvas.vue";
 import HandlersCanvas from "./components/HanldersCanvas.vue";
+import SliderBar from "../../components/slider-bar/SliderBar.vue";
 
 export default {
   name: "Editor",
-  components: { HandlersCanvas, ComponentsCanvas, SimpleController },
+  components: {SliderBar, HandlersCanvas, ComponentsCanvas, SimpleController },
   setup() {
     const store = useStore();
     const activeElementState = store.state.activeElement;
