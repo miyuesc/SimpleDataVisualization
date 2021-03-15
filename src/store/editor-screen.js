@@ -2,10 +2,6 @@ const editorScreen = {
   namespaced: true,
   state: () => ({
     scale: 0.8,
-    position: {
-      left: 15,
-      top: 15
-    },
     // 坐标
     mousedownCoordinator: {
       x: 0,
