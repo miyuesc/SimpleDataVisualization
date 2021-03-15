@@ -14,7 +14,7 @@
       </div>
     </div>
     <div :class="{ 'component-support-list': true, 'is-show': showPanel }">
-      <a v-for="p in selectedComponentType.list" :key="p.code" class="component-support-item" :draggable="true" @mousedown.stop.prevent="dragStart($event, p)">
+      <a v-for="p in selectedComponentType.list" :key="p.code" class="component-support-item" draggable @mousedown.stop="dragStart($event, p)">
         <img src="https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/line-simple.webp?_v_=1612615474746" alt="test" />
       </a>
     </div>
