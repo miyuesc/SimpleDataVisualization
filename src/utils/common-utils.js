@@ -1,4 +1,7 @@
 export function debounce(fn, delay) {
+  if (typeof fn !== 'function') { // 参数类型为函数
+    throw new TypeError('fn is not a function');
+  }
   let timer; // 维护一个 timer
   return function () {
     let _this = this; // 取debounce执行作用域的this
@@ -13,6 +16,9 @@ export function debounce(fn, delay) {
 }
 
 export function throttle(fn, delay) {
+  if (typeof fn !== 'function') { // 参数类型为函数
+    throw new TypeError('fn is not a function');
+  }
   let timer;
   return function () {
     let _this = this;

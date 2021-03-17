@@ -43,13 +43,8 @@ export default {
       console.log(p);
     }
 
-    const dragEnd = ({target}) => {
-      console.log(target);
-
-    }
-
     onMounted(() => {
-      document.documentElement.addEventListener("mouseup", dragEnd)
+      // document.documentElement.addEventListener("mouseup", dragEnd)
     })
 
     return {

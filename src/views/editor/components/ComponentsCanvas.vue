@@ -49,7 +49,7 @@ export default {
       updateActiveElementState({ ...cpt, visible: true, moving: true });
     }
     const clearHandlerVisible = () => {
-      store.commit("activeElement/updateVisible", false);
+      store.commit("activeElement/updateMovable", false);
       store.commit("activeElement/updateMoving", false);
     }
     // const endToMoving = cpt => {

@@ -31,19 +31,22 @@ export default {
      * [ bl --- bc --- br ]
      */
     const points = ["tl", "tc", "tr", "ml", "mr", "bl", "bc", "br"];
-
     // 变量
     const parentNodeSize = reactive({ width: 0, height: 0 }); // 父元素的高宽
-    const isResizing = ref(false); // 是否在重置大小
-    const isMoving = computed(() => activeElementState.moving);
-    const mousedownMDC = computed(() => editorScreenState.mousedownCoordinator);
     let activePoint; // 当前激活的某个 point
     let currentPAS; // 改变之前的大小
 
-    // // vuex 缓存更新方法
+    const isResizing = computed(() => activeElementState.resizing);
+    const isMoving = computed(() => activeElementState.moving);
+    const mousedownMDC = computed(() => editorScreenState.mousedownCoordinator);
+
+    // vuex 缓存更新方法
+    // 更新 激活元素的 position and size
     const updateActiveElementState = newState => store.commit("activeElement/updatePAS", newState);
-    const throttleActiveUpdate = throttle(updateActiveElementState,5);
+    // 更新 components 列表中的 当前元素状态
     const updateComponentInList = newState => store.commit("components/update", { newState, index: activeElementState.index });
+    // 节流更新 激活状态元素
+    const throttleActiveUpdate = throttle(updateActiveElementState,5);
     const debounceComponentUpdate = debounce(updateComponentInList, 50);
 
     const throttleUpdate = throttle((newState) => {
@@ -78,7 +81,7 @@ export default {
     // 选中point并准备进行大小改变, 记录初始状态（需要阻止冒泡）
     const handleToResize = (point, event) => {
       event.stopPropagation();
-      isResizing.value = true;
+      store.commit("activeElement/updateResizing", true);
       activePoint = point;
       currentPAS = {
         x: event.target.parentNode.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
@@ -103,10 +106,8 @@ export default {
     const onMouseUp = () => {
       if (!isResizing.value && !isMoving.value) return;
       activePoint = null;
-      isResizing.value = false;
-      store.commit("activeElement/updateMoving", false);
-      // setTimeout(() => (store.commit("activeElement/updateMoving", false)), 10)
-      // throttleUpdate({ ...activeElementState, moving: false });
+      store.commit("activeElement/updateMovable", false);
+      store.commit("activeElement/updateResizable", false);
     }
     // 计算移动距离，更新元素大小及位置
     const computedElementSize = event => {

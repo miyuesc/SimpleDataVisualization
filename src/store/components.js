@@ -10,7 +10,8 @@ const components = {
         index: 0,
         zIndex: 1,
         visible: false, // 显示状态
-        moving: false
+        movable: false,
+        resizable: false
       },
       {
         id: "test-1231",
@@ -19,7 +20,8 @@ const components = {
         index: 1,
         zIndex: 2,
         visible: false, // 显示状态
-        moving: false
+        movable: false,
+        resizable: false
       }
     ]
   }),

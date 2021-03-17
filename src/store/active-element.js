@@ -6,7 +6,8 @@ const activeElement = {
     id: "",
     index: -1,
     visible: false, // 显示状态
-    moving: false // 是否移动 => 是否显示指示线
+    resizable: false, // 是否准备缩放
+    movable: false // 是否移动 => 是否显示指示线
   }),
   getters: {
     activeElementState(state) {
@@ -15,17 +16,16 @@ const activeElement = {
   },
   mutations: {
     updateAll(state, newState) {
-      // state = JSON.parse(JSON.stringify(newState));
       state.position = { ...newState.position }; // position and size
       state.size = { ...newState.size };
       state.visible = newState.visible;
-      state.moving = newState.moving;
+      state.movable = newState.movable;
       state.id = newState.id;
       state.index = newState.index;
     },
-    updatePAS(state, newPAS) {
-      state.position = { ...newPAS.position }; // position and size
-      state.size = { ...newPAS.size };
+    updatePAS(state, { position, size }) {
+      state.position = { ...position }; // position and size
+      state.size = { ...size };
     },
     updatePosition(state, newPosition) {
       state.position = { ...newPosition };
@@ -36,10 +36,13 @@ const activeElement = {
     updateVisible(state, visible) {
       state.visible = visible;
     },
-    updateMoving(state, moving) {
-      state.moving = moving;
+    updateMovable(state, movable) {
+      state.movable = movable;
     },
-    updateBase(state, id, index) {
+    updateResizable(state, resizable) {
+      state.resizable = resizable;
+    },
+    updateBase(state, { id, index }) {
       state.id = id;
       state.index = index;
     }
