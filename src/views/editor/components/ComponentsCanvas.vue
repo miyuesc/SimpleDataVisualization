@@ -46,11 +46,11 @@ export default {
         mouseY: event.clientY // 鼠标处于屏幕的纵向位置
       };
       store.commit("editorScreen/updateMDC", mdc)
-      updateActiveElementState({ ...cpt, visible: true, moving: true });
+      updateActiveElementState({ ...cpt, visible: true, movable: true });
     }
     const clearHandlerVisible = () => {
       store.commit("activeElement/updateMovable", false);
-      store.commit("activeElement/updateMoving", false);
+      store.commit("activeElement/updateVisible", false);
     }
     // const endToMoving = cpt => {
     //   updateActiveElementState({ ...cpt, moving: false });

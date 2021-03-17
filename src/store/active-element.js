@@ -20,6 +20,7 @@ const activeElement = {
       state.size = { ...newState.size };
       state.visible = newState.visible;
       state.movable = newState.movable;
+      state.resizable = newState.resizable;
       state.id = newState.id;
       state.index = newState.index;
     },

@@ -17,7 +17,7 @@ export default {
     const editorScreenState = store.state.editorScreen;
 
     return {
-      moving: computed(() => activeElementState.moving),
+      moving: computed(() => activeElementState.movable),
       verticalStyleL: computed(() => {
         let borderWidth = Math.floor(2 / editorScreenState.scale) || 1;
         return `left: ${activeElementState.position.left}px; border-width: 0; border-right-width: ${ borderWidth }px`

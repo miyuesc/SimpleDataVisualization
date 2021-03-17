@@ -18,7 +18,7 @@ import { debounce, throttle } from "../../utils/common-utils";
 
 export default {
   name: "DragIndicatorPoints",
-  setup(props) {
+  setup() {
     const store = useStore();
     const editorScreenState = store.state.editorScreen;
     const activeElementState = store.state.activeElement;
@@ -36,8 +36,8 @@ export default {
     let activePoint; // 当前激活的某个 point
     let currentPAS; // 改变之前的大小
 
-    const isResizing = computed(() => activeElementState.resizing);
-    const isMoving = computed(() => activeElementState.moving);
+    const isResizable = computed(() => activeElementState.resizable);
+    const isMovable = computed(() => activeElementState.movable);
     const mousedownMDC = computed(() => editorScreenState.mousedownCoordinator);
 
     // vuex 缓存更新方法
@@ -81,7 +81,7 @@ export default {
     // 选中point并准备进行大小改变, 记录初始状态（需要阻止冒泡）
     const handleToResize = (point, event) => {
       event.stopPropagation();
-      store.commit("activeElement/updateResizing", true);
+      store.commit("activeElement/updateResizable", true);
       activePoint = point;
       currentPAS = {
         x: event.target.parentNode.offsetLeft, // 鼠标所在元素 距离父元素左侧 的距离
@@ -94,17 +94,12 @@ export default {
     }
     // 鼠标移动状态
     const onMouseMoving = (event) => {
-      // 非 moving 或者 resizing 状态 直接返回
-      if (!isResizing.value && !isMoving.value) return;
-      if (isMoving.value)  {
-        return computedElementPosition(event);
-      }
-      // resize 部分
-      computedElementSize(event);
+      if (isMovable.value) return computedElementPosition(event);
+      if (isResizable.value) return computedElementSize(event);
     }
     // 鼠标抬起，移除事件与状态
     const onMouseUp = () => {
-      if (!isResizing.value && !isMoving.value) return;
+      if (!isResizable.value && !isMovable.value) return;
       activePoint = null;
       store.commit("activeElement/updateMovable", false);
       store.commit("activeElement/updateResizable", false);
