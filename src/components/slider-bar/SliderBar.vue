@@ -14,7 +14,7 @@
       </div>
     </div>
     <div :class="{ 'component-support-list': true, 'is-show': showPanel }">
-      <a v-for="p in selectedComponentType.list" :key="p.code" class="component-support-item" draggable @mousedown.stop="dragStart($event, p)">
+      <a v-for="p in selectedComponentType.list" :key="p.code" class="component-support-item" @mousedown.stop="dragStart($event, p)" @dragstart.stop.prevent>
         <img src="https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples/data/thumb/line-simple.webp?_v_=1612615474746" alt="test" />
       </a>
     </div>
@@ -23,13 +23,16 @@
 
 <script>
 import { reactive, ref, onMounted, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
 import PresetComponents from "../../utils/preset-components"
 
 export default {
   name: "SliderBar",
   setup() {
+    const store = useStore();
+    const editorScreenState = store.state.editorScreen;
     const presetComponentsList = PresetComponents;
-    let selectedComponentType = reactive({list: [], activeKey: ""});
+    let selectedComponentType = reactive({ list: [], activeKey: "" });
     const showPanel = ref(false);
 
     const openChildrenPenal = i => {
@@ -39,13 +42,10 @@ export default {
     }
 
     const dragStart = (e, p) => {
-      console.log(e);
-      console.log(p);
+      console.log(JSON.stringify(p));
+      store.commit("editorScreen/updateCreating", true);
+      store.commit("editorScreen/updateNewComponent", JSON.stringify(p));
     }
-
-    onMounted(() => {
-      // document.documentElement.addEventListener("mouseup", dragEnd)
-    })
 
     return {
       presetComponentsList,
@@ -134,6 +134,10 @@ export default {
       display: block;
       background: #f4f9f9;
       overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+      }
       & + .component-support-item {
         margin-top: 16px;
       }

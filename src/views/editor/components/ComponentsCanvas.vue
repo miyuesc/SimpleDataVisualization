@@ -13,7 +13,6 @@
       }"
       @mousedown.stop.prevent="changeActiveElement(cpt, $event)"
     >
-      <!--      @mouseup="endToMoving(cpt, $event)"-->
       <p>{{ cpt.id }}</p>
     </div>
   </div>
@@ -33,9 +32,8 @@ export default {
     const activeElementState = store.state.activeElement;
     // const editorScreenState = store.state.editorScreen;
 
-    const components = computed(() => {
-      return componentsState.components
-    });
+    const components = computed(() => componentsState.components);
+
     const updateActiveElementState = newState => store.commit("activeElement/updateAll", newState);
 
     const changeActiveElement = (cpt, event) => {
@@ -48,18 +46,16 @@ export default {
       store.commit("editorScreen/updateMDC", mdc)
       updateActiveElementState({ ...cpt, visible: true, movable: true });
     }
+
     const clearHandlerVisible = () => {
       store.commit("activeElement/updateMovable", false);
       store.commit("activeElement/updateVisible", false);
+      store.commit("activeElement/updateResizable", false);
     }
-    // const endToMoving = cpt => {
-    //   updateActiveElementState({ ...cpt, moving: false });
-    // }
 
     return {
       components,
       changeActiveElement,
-      // endToMoving,
       clearHandlerVisible
     }
   }

@@ -8,7 +8,9 @@ const editorScreen = {
       y: 0,
       mouseX: 0,
       mouseY: 0
-    }
+    },
+    isCreating: false,
+    newComponent: ""
   }),
   mutations: {
     updateAll(state, newState) {
@@ -22,6 +24,12 @@ const editorScreen = {
     },
     updateMDC(state, newMDC) {
       state.mousedownCoordinator = JSON.parse(JSON.stringify(newMDC));
+    },
+    updateCreating(state, status) {
+      state.isCreating = status;
+    },
+    updateNewComponent(state, newComponent) {
+      state.newComponent = newComponent;
     }
   }
 }

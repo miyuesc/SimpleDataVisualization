@@ -39,6 +39,7 @@ export default {
     const isResizable = computed(() => activeElementState.resizable);
     const isMovable = computed(() => activeElementState.movable);
     const mousedownMDC = computed(() => editorScreenState.mousedownCoordinator);
+    const isCreating = computed(() => editorScreenState.isCreating);
 
     // vuex 缓存更新方法
     // 更新 激活元素的 position and size
@@ -46,13 +47,13 @@ export default {
     // 更新 components 列表中的 当前元素状态
     const updateComponentInList = newState => store.commit("components/update", { newState, index: activeElementState.index });
     // 节流更新 激活状态元素
-    const throttleActiveUpdate = throttle(updateActiveElementState,5);
-    const debounceComponentUpdate = debounce(updateComponentInList, 50);
+    const throttleActiveUpdate = throttle(updateActiveElementState,16);
+    const debounceComponentUpdate = debounce(updateComponentInList, 100);
 
     const throttleUpdate = throttle((newState) => {
       updateActiveElementState(newState);
       updateComponentInList(newState);
-    }, 5)
+    }, 16)
     //
     // 样式计算属性
     const scale = computed(() => editorScreenState.scale); // 缩放
@@ -94,15 +95,29 @@ export default {
     }
     // 鼠标移动状态
     const onMouseMoving = (event) => {
+      // 移动或者缩放
       if (isMovable.value) return computedElementPosition(event);
       if (isResizable.value) return computedElementSize(event);
+      // 左侧的新增事件
     }
     // 鼠标抬起，移除事件与状态
-    const onMouseUp = () => {
-      if (!isResizable.value && !isMovable.value) return;
+    const onMouseUp = (event) => {
+      // 移动或者缩放
       activePoint = null;
       store.commit("activeElement/updateMovable", false);
       store.commit("activeElement/updateResizable", false);
+      // 左侧的新增事件
+      if (isCreating.value) {
+        store.commit("editorScreen/updateCreating", false);
+        let newComponent = JSON.parse(editorScreenState.newComponent);
+        newComponent.size = { width: 200, height: 120 };
+        newComponent.position = { left: event.offsetX, top: event.offsetY };
+        newComponent.visible = true;
+        newComponent.movable = false;
+        newComponent.resizable = false;
+        store.commit("components/add", newComponent);
+        store.commit("activeElement/updateAll", newComponent);
+      }
     }
     // 计算移动距离，更新元素大小及位置
     const computedElementSize = event => {
